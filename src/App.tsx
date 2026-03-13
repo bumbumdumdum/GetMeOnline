@@ -12,10 +12,9 @@ import {
 } from "lucide-react";
 import { cn } from "./lib/utils";
 import React, { useState } from "react";
-import { GoogleGenAI, Type } from "@google/genai";
 
 const LOGO_URL = "https://raw.githubusercontent.com/ProStudio99/TakeMeOnline/086b0705a31059af0ef208f07b08355383c137c6/We%20media/AE94D9B1-7E99-4184-866D-CE6E2EAB88D4.png";
-const VIDEO_URL = "https://raw.githubusercontent.com/ProStudio99/TakeMeOnline/5b194c75ac958d6b2cf579f7cce973b4d926d096/We%20media/gemini_generated_video_8CF985E8.mov";
+const VIDEO_URL = "https://raw.githubusercontent.com/bumbumdumdum/Website-media/228b75dc532ce4847376361eb60e702adf384cf7/gemini_generated_video_8CF985E8.mov";
 
 type Language = 'en' | 'hi';
 
@@ -31,8 +30,8 @@ const translations = {
       book: "Book Consultation"
     },
     about: {
-      title: "The Story Behind GetBizOnline",
-      p1: "GetBizOnline was founded by two friends who shared a common vision: to bridge the gap between traditional businesses and the digital world. With backgrounds in owning and running successful ventures, we experienced firsthand the challenges of scaling in a competitive market.",
+      title: "The Story Behind The Søren Studio",
+      p1: "The Søren Studio was founded by two friends who shared a common vision: to bridge the gap between traditional businesses and the digital world. With backgrounds in owning and running successful ventures, we experienced firsthand the challenges of scaling in a competitive market.",
       p2: "As we grew our own businesses, we realized that having a strong online presence wasn't just an option—it was the single most important factor for sustainable growth. We saw many talented business owners struggling because their digital 'storefront' didn't match the quality of their physical work.",
       p3: "We decided to combine our expertise in business operations and digital strategy to create a service that treats your website not just as a page, but as a growth engine. Our mission is to handle the technical complexity so you can focus on what you do best: running your business.",
       team: {
@@ -129,7 +128,7 @@ const translations = {
       subtitle: "Experience our premium websites across all devices."
     },
     footer: {
-      tagline: "GetBizOnline — Turning Businesses Into Online Brands.",
+      tagline: "The Søren Studio — Turning Businesses Into Online Brands.",
       desc: "We build premium websites and manage digital presence to help businesses reach more customers online.",
       links: "Quick Links",
       contact: "Contact",
@@ -179,8 +178,8 @@ const translations = {
       book: "Consultation बुक करें"
     },
     about: {
-      title: "GetBizOnline के पीछे की कहानी",
-      p1: "GetBizOnline की स्थापना दो दोस्तों द्वारा की गई थी जिन्होंने एक साझा दृष्टिकोण साझा किया था: पारंपरिक व्यवसायों और डिजिटल दुनिया के बीच की खाई को पाटना। सफल उद्यमों के मालिक होने और चलाने की पृष्ठभूमि के साथ, हमने प्रतिस्पर्धी बाजार में विस्तार की चुनौतियों का प्रत्यक्ष अनुभव किया।",
+      title: "The Søren Studio के पीछे की कहानी",
+      p1: "The Søren Studio की स्थापना दो दोस्तों द्वारा की गई थी जिन्होंने एक साझा दृष्टिकोण साझा किया था: पारंपरिक व्यवसायों और डिजिटल दुनिया के बीच की खाई को पाटना। सफल उद्यमों के मालिक होने और चलाने की पृष्ठभूमि के साथ, हमने प्रतिस्पर्धी बाजार में विस्तार की चुनौतियों का प्रत्यक्ष अनुभव किया।",
       p2: "जैसे-जैसे हमने अपने स्वयं के व्यवसायों को बढ़ाया, हमें एहसास हुआ कि एक मजबूत ऑनलाइन उपस्थिति होना केवल एक विकल्प नहीं था - यह निरंतर विकास के लिए सबसे महत्वपूर्ण कारक था। हमने कई प्रतिभाशाली व्यवसाय मालिकों को संघर्ष करते देखा क्योंकि उनका डिजिटल 'स्टोरफ्रंट' उनके भौतिक काम की गुणवत्ता से मेल नहीं खाता था।",
       p3: "हमने अपनी व्यावसायिक संचालन और डिजिटल रणनीति की विशेषज्ञता को मिलाकर एक ऐसी सेवा बनाने का निर्णय लिया जो आपकी वेबसाइट को केवल एक पेज के रूप में नहीं, बल्कि एक विकास इंजन के रूप में मानती है। हमारा मिशन तकनीकी जटिलता को संभालना है ताकि आप उस पर ध्यान केंद्रित कर सकें जो आप सबसे अच्छा करते हैं: अपना व्यवसाय चलाना।",
       team: {
@@ -277,7 +276,7 @@ const translations = {
       subtitle: "सभी डिवाइस पर हमारी प्रीमियम वेबसाइटों का अनुभव करें।"
     },
     footer: {
-      tagline: "GetBizOnline — Businesses को Online Brands में बदलना।",
+      tagline: "The Søren Studio — Businesses को Online Brands में बदलना।",
       desc: "हम प्रीमियम वेबसाइटें बनाते हैं और व्यवसायों को अधिक ग्राहकों तक पहुंचने में मदद करने के लिए डिजिटल उपस्थिति का प्रबंधन करते हैं।",
       links: "त्वरित लिंक",
       contact: "संपर्क",
@@ -347,8 +346,8 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-tmo-black/80 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <button onClick={() => handleNavClick('home')} className="flex items-center gap-3">
-          <img src={LOGO_URL} alt="GetBizOnline Logo" className="h-10 md:h-12 w-auto object-contain rounded-lg" />
-          <span className="font-serif font-bold text-xl tracking-tight hidden sm:block">GetBizOnline</span>
+          <img src={LOGO_URL} alt="The Søren Studio Logo" className="h-10 md:h-12 w-auto object-contain rounded-lg" />
+          <span className="font-serif font-bold text-xl tracking-tight hidden sm:block">The Søren Studio</span>
         </button>
 
         {/* Desktop Nav */}
@@ -459,37 +458,43 @@ function AiSearch({ lang }: { lang: Language }) {
     }, 600);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: `Perform a real-time SEO and online presence audit for the business: "${query}". 
-        Search Google to find if they have a website, a Google Business profile, and social media presence.
-        Provide a score from 1-100 based on their digital visibility.
-        If they have no website, the score should be below 30.
-        If they have a website but poor SEO/socials, score 30-70.
-        If they are dominant, score 70-100.`,
-        config: {
-          tools: [{ googleSearch: {} }],
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              rating: { type: Type.NUMBER },
-              name: { type: Type.STRING },
-              hasWebsite: { type: Type.BOOLEAN },
-              summary: { type: Type.STRING },
-              details: { 
-                type: Type.ARRAY,
-                items: { type: Type.STRING }
-              }
+      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || "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";
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": window.location.origin,
+          "X-Title": "The Søren Studio"
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.0-flash-001",
+          messages: [
+            {
+              role: "system",
+              content: "You are an AI SEO Auditor. Analyze the business provided and return a JSON report. Be realistic. If the business is famous, give it a high score. If it sounds generic or small, give it a lower score and suggest improvements."
             },
-            required: ["rating", "name", "hasWebsite", "summary", "details"]
-          }
-        }
+            {
+              role: "user",
+              content: `Perform an SEO and online presence audit for: "${query}". 
+              Provide a score from 1-100.
+              Return ONLY a JSON object with this structure:
+              {
+                "rating": number,
+                "name": "string",
+                "hasWebsite": boolean,
+                "summary": "string",
+                "details": ["string", "string", "string"]
+              }`
+            }
+          ],
+          response_format: { type: "json_object" }
+        })
       });
-
-      const data = JSON.parse(response.text);
-      setResult(data);
+      
+      const data = await response.json();
+      const auditResult = JSON.parse(data.choices[0].message.content);
+      setResult(auditResult);
     } catch (error) {
       console.error("Audit error:", error);
       // Fallback for demo if API fails or key missing
@@ -669,6 +674,7 @@ function Hero({ lang, setLang }: { lang: Language, setLang: (l: Language) => voi
           playsInline
           className="w-full h-full object-cover opacity-90"
         >
+          <source src={VIDEO_URL} type="video/quicktime" />
           <source src={VIDEO_URL} type="video/mp4" />
           {/* Fallback if mov doesn't play */}
         </video>
