@@ -472,13 +472,14 @@ function AiSearch({ lang }: { lang: Language }) {
           messages: [
             {
               role: "system",
-              content: "You are an AI SEO Auditor. Analyze the business provided and return a JSON report. Be realistic. If the business is famous, give it a high score. If it sounds generic or small, give it a lower score and suggest improvements."
+              content: "You are an AI SEO Auditor. Your task is to perform a real-time search and analysis of the business provided. You MUST provide a realistic audit based on their current online presence. If you cannot find real-time data, use your internal knowledge to provide the most accurate assessment possible. Return ONLY a JSON object."
             },
             {
               role: "user",
-              content: `Perform an SEO and online presence audit for: "${query}". 
+              content: `Perform a comprehensive SEO and online presence audit for the business: "${query}". 
+              Search for their website, Google Business profile, and social media presence.
               Provide a score from 1-100.
-              Return ONLY a JSON object with this structure:
+              Return ONLY a JSON object with this exact structure:
               {
                 "rating": number,
                 "name": "string",
@@ -492,8 +493,17 @@ function AiSearch({ lang }: { lang: Language }) {
         })
       });
       
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+      }
+
       const data = await response.json();
-      const auditResult = JSON.parse(data.choices[0].message.content);
+      if (!data.choices || data.choices.length === 0) {
+        throw new Error("No response from AI");
+      }
+
+      const content = data.choices[0].message.content;
+      const auditResult = JSON.parse(content);
       setResult(auditResult);
     } catch (error) {
       console.error("Audit error:", error);
@@ -1691,8 +1701,8 @@ function Footer({ lang }: { lang: Language }) {
         <div className="grid md:grid-cols-4 gap-12 mb-16">
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <img src={LOGO_URL} alt="GetBizOnline Logo" className="h-12 md:h-16 w-auto object-contain rounded-xl" />
-              <span className="font-serif font-bold text-2xl tracking-tight">GetBizOnline</span>
+              <img src={LOGO_URL} alt="The Søren Studio Logo" className="h-12 md:h-16 w-auto object-contain rounded-xl" />
+              <span className="font-serif font-bold text-2xl tracking-tight">The Søren Studio</span>
             </div>
             <p className="text-white/60 max-w-sm mb-8">
               {t.desc}
@@ -1714,13 +1724,13 @@ function Footer({ lang }: { lang: Language }) {
             <h4 className="font-semibold mb-6">{t.contact}</h4>
             <ul className="space-y-4 text-white/60">
               <li>+91 63526 54556</li>
-              <li>contact@getbizonline.in</li>
+              <li>contact@thesorenstudio.com</li>
             </ul>
           </div>
         </div>
         
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between text-sm text-white/40">
-          <p>© {new Date().getFullYear()} GetBizOnline. {t.rights}</p>
+          <p>© {new Date().getFullYear()} The Søren Studio. {t.rights}</p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-white transition-colors">{lang === 'hi' ? "गोपनीयता नीति" : "Privacy Policy"}</a>
             <a href="#" className="hover:text-white transition-colors">{lang === 'hi' ? "सेवा की शर्तें" : "Terms of Service"}</a>
