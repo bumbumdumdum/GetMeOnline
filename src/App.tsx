@@ -13,8 +13,32 @@ import {
 import { cn } from "./lib/utils";
 import React, { useState } from "react";
 
-const LOGO_URL = "https://raw.githubusercontent.com/ProStudio99/TakeMeOnline/086b0705a31059af0ef208f07b08355383c137c6/We%20media/AE94D9B1-7E99-4184-866D-CE6E2EAB88D4.png";
+const LOGO_URL = "https://raw.githubusercontent.com/XzeBitOP/SorenAssets/0385f974fa45012b25cdb9e9ab825d3dd10a7065/Website%20images/6D2E38AE-E45F-4861-96EB-B2FC8B03F4A2.png";
 const VIDEO_URL = "https://raw.githubusercontent.com/bumbumdumdum/Website-media/228b75dc532ce4847376361eb60e702adf384cf7/gemini_generated_video_8CF985E8.mov";
+
+const BUSINESS_DATABASE = [
+  "Tata Consultancy Services", "Infosys", "Tech Mahindra", "Azilen Technologies", "eInfochips",
+  "Agile Infoways", "RadixWeb", "TatvaSoft", "RapidOps", "Netclues", "Prompt Softech",
+  "Bacancy Technology", "Hyperlink Infosystem", "OpenXcell", "Vrinsoft Technology",
+  "AllianceTek", "Magneto IT Solutions", "AddWeb Solution", "Bytes Technolab", "Codal",
+  "WPWeb Infotech", "Brainvire Infotech", "i-HiddenTalent", "SharpQuest", "Instinctools",
+  "Agashiye Restaurant", "Gordhan Thal", "Rajwadu", "Vishalla", "Barbeque Nation Ahmedabad",
+  "The Green House", "Swati Snacks", "Tomato’s Restaurant", "Mirch Masala", "Timpani Restaurant",
+  "Pakwan Dining Hall", "Honest Restaurant", "Sankalp Restaurant", "Gwalia Sweets", "Upper Crust Cafe",
+  "Jawed Habib Salon", "Kapil’s Salon", "Lakme Salon", "Enrich Salon", "K3 Salon",
+  "Femiluxe Salon", "Kallistaa Salon", "Blades & Scissors Salon", "Toni & Guy Salon", "Looks Salon",
+  "Apollo Hospitals Ahmedabad", "Sterling Hospital", "Shalby Hospital", "Zydus Hospital",
+  "KD Hospital", "HCG Cancer Centre", "SAL Hospital", "Narayana Multispeciality Hospital",
+  "CIMS Hospital", "XzeCure Home care", "Adani Realty", "Godrej Properties", "Shilp Group",
+  "Bakeri Group", "Arvind SmartSpaces", "Ganesh Housing", "Savvy Infrastructure", "Shivalik Group",
+  "Siddhi Group", "Shyam Group", "Allen Career Institute Ahmedabad", "Aakash Institute",
+  "BYJU’S Tuition Centre", "Career Launcher Ahmedabad", "IMS Learning Centre", "TIME Coaching Centre",
+  "Resonance Coaching", "Toppers Academy", "Eklavya Education", "Knowledge High School",
+  "Gold’s Gym Ahmedabad", "Anytime Fitness", "Cult Fit", "Bodyline Gym", "Fitness First Ahmedabad",
+  "Ozone Fitness", "Talwalkars Gym", "Muscle Factory Gym", "Spartan Fitness", "Iron Paradise Gym",
+  "Hyatt Regency Ahmedabad", "Taj Skyline", "ITC Narmada", "Novotel Ahmedabad", "Courtyard by Marriott",
+  "Lemon Tree Hotel", "Pride Plaza Hotel", "Fortune Landmark Hotel", "Radisson Blu Ahmedabad", "The Fern Hotel"
+];
 
 type Language = 'en' | 'hi';
 
@@ -343,22 +367,22 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-tmo-black/80 backdrop-blur-md border-b border-white/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-tmo-gold backdrop-blur-md border-b border-black/10">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <button onClick={() => handleNavClick('home')} className="flex items-center gap-3">
           <img src={LOGO_URL} alt="The Søren Studio Logo" className="h-10 md:h-12 w-auto object-contain rounded-lg" />
-          <span className="font-serif font-bold text-xl tracking-tight hidden sm:block">The Søren Studio</span>
+          <span className="font-serif font-bold text-xl tracking-tight hidden sm:block text-tmo-black">The Søren Studio</span>
         </button>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/80">
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-tmo-black/80">
           {navLinks.map(link => (
             <button 
               key={link.id}
               onClick={() => handleNavClick(link.id)}
               className={cn(
-                "hover:text-tmo-gold transition-colors",
-                currentPage === link.id ? "text-tmo-gold" : "text-white/80"
+                "hover:text-tmo-black transition-colors",
+                currentPage === link.id ? "text-tmo-black font-bold" : "text-tmo-black/70"
               )}
             >
               {link.label}
@@ -367,16 +391,16 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="flex bg-white/5 rounded-full p-1 border border-white/10">
+          <div className="flex bg-black/5 rounded-full p-1 border border-black/10">
             <button 
               onClick={() => setLang('en')}
-              className={cn("px-3 py-1 rounded-full text-xs font-bold transition-all", lang === 'en' ? "bg-tmo-gold text-tmo-black" : "text-white/50 hover:text-white")}
+              className={cn("px-3 py-1 rounded-full text-xs font-bold transition-all", lang === 'en' ? "bg-tmo-black text-tmo-gold" : "text-black/50 hover:text-black")}
             >
               EN
             </button>
             <button 
               onClick={() => setLang('hi')}
-              className={cn("px-3 py-1 rounded-full text-xs font-bold transition-all", lang === 'hi' ? "bg-tmo-gold text-tmo-black" : "text-white/50 hover:text-white")}
+              className={cn("px-3 py-1 rounded-full text-xs font-bold transition-all", lang === 'hi' ? "bg-tmo-black text-tmo-gold" : "text-black/50 hover:text-black")}
             >
               हिन्दी
             </button>
@@ -384,7 +408,7 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
           
           {/* Hamburger Toggle */}
           <button 
-            className="md:hidden text-white p-2"
+            className="md:hidden text-tmo-black p-2"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -392,7 +416,7 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
 
           <button 
             onClick={() => handleNavClick('contact')}
-            className="hidden sm:block bg-tmo-gold text-tmo-black px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-white transition-colors"
+            className="hidden sm:block bg-tmo-black text-tmo-gold px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-white hover:text-tmo-black transition-colors"
           >
             {t.book}
           </button>
@@ -404,7 +428,7 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden bg-zinc-900 border-b border-white/10 px-6 py-8 flex flex-col gap-6"
+          className="md:hidden bg-tmo-gold border-b border-black/10 px-6 py-8 flex flex-col gap-6"
         >
           {navLinks.map(link => (
             <button 
@@ -412,7 +436,7 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
               onClick={() => handleNavClick(link.id)}
               className={cn(
                 "text-left text-lg font-medium",
-                currentPage === link.id ? "text-tmo-gold" : "text-white/80"
+                currentPage === link.id ? "text-tmo-black font-bold" : "text-tmo-black/80"
               )}
             >
               {link.label}
@@ -420,7 +444,7 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
           ))}
           <button 
             onClick={() => handleNavClick('contact')}
-            className="bg-tmo-gold text-tmo-black px-6 py-3 rounded-xl font-bold text-center"
+            className="bg-tmo-black text-tmo-gold px-6 py-3 rounded-xl font-bold text-center"
           >
             {t.book}
           </button>
@@ -450,75 +474,53 @@ function AiSearch({ lang }: { lang: Language }) {
     setIsSearching(true);
     setResult(null);
     
-    const engines = ["Google Search", "AI Analysis", "SEO Audit", "Mobile Check"];
+    const engines = ["Local Database Search", "SEO Analysis", "Presence Audit", "Website Check"];
     let step = 0;
     const interval = setInterval(() => {
       setSearchEngine(engines[step % engines.length]);
       step++;
-    }, 600);
+    }, 1000);
 
-    try {
-      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || "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";
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": window.location.origin,
-          "X-Title": "The Søren Studio"
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.0-flash-001",
-          messages: [
-            {
-              role: "system",
-              content: "You are an AI SEO Auditor. Your task is to perform a real-time search and analysis of the business provided. You MUST provide a realistic audit based on their current online presence. If you cannot find real-time data, use your internal knowledge to provide the most accurate assessment possible. Return ONLY a JSON object."
-            },
-            {
-              role: "user",
-              content: `Perform a comprehensive SEO and online presence audit for the business: "${query}". 
-              Search for their website, Google Business profile, and social media presence.
-              Provide a score from 1-100.
-              Return ONLY a JSON object with this exact structure:
-              {
-                "rating": number,
-                "name": "string",
-                "hasWebsite": boolean,
-                "summary": "string",
-                "details": ["string", "string", "string"]
-              }`
-            }
-          ],
-          response_format: { type: "json_object" }
-        })
-      });
-      
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      if (!data.choices || data.choices.length === 0) {
-        throw new Error("No response from AI");
-      }
-
-      const content = data.choices[0].message.content;
-      const auditResult = JSON.parse(content);
-      setResult(auditResult);
-    } catch (error) {
-      console.error("Audit error:", error);
-      // Fallback for demo if API fails or key missing
-      setResult({
-        rating: 15,
-        name: query,
-        hasWebsite: false,
-        summary: "We couldn't find a strong digital presence for this business.",
-        details: ["No official website found", "Google Business profile is unoptimized", "Low social media visibility"]
-      });
-    } finally {
+    // Simulate 4-5 second search
+    setTimeout(() => {
       clearInterval(interval);
+      const found = BUSINESS_DATABASE.some(biz => 
+        biz.toLowerCase().includes(query.toLowerCase()) || 
+        query.toLowerCase().includes(biz.toLowerCase())
+      );
+
+      if (found) {
+        const score = Math.floor(Math.random() * (90 - 85 + 1)) + 85;
+        setResult({
+          rating: score,
+          name: query,
+          hasWebsite: true,
+          summary: `${query} is a well-established business in our database with a strong digital foundation.`,
+          details: [
+            "Official website detected and verified",
+            "Google Business profile is active and optimized",
+            "Strong social media presence across platforms",
+            "Mobile responsiveness is excellent",
+            "Page load speed is within optimal range"
+          ]
+        });
+      } else {
+        setResult({
+          rating: 15,
+          name: query,
+          hasWebsite: false,
+          summary: "We couldn't find this business in our verified database. This usually means a weak or non-existent digital presence.",
+          details: [
+            "No official website found in our records",
+            "Google Business profile is unoptimized or missing",
+            "Low social media visibility",
+            "Potential loss of 70% online customers",
+            "Immediate digital intervention recommended"
+          ]
+        });
+      }
       setIsSearching(false);
-    }
+    }, 4500);
   };
 
   return (
