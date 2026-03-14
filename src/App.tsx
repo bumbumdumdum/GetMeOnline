@@ -502,20 +502,26 @@ function AiSearch({ lang }: { lang: Language }) {
     }, 1500);
 
     try {
-      // Compatibility for both local environment and Vercel/GitHub
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+      // Try to get the API key from multiple possible sources
+      // 1. VITE_ prefixed (Standard for Vite/Vercel)
+      // 2. process.env (Standard for Node/Some CI)
+      // 3. Fallback to empty string
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 
+                     (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : '');
       
+      console.log("AI Search: Attempting audit with API Key present:", !!apiKey);
+
       if (!apiKey) {
         setResult({
           rating: 0,
           name: query,
           hasWebsite: false,
-          summary: "API Key Missing: The AI Search requires a Gemini API Key to function on Vercel.",
+          summary: "API Key Missing: The AI Search requires a Gemini API Key to function.",
           details: [
-            "1. Go to Vercel Dashboard > Settings > Environment Variables",
-            "2. Add VITE_GEMINI_API_KEY with your Gemini API Key",
-            "3. Redeploy your application to apply changes",
-            "Note: Ensure the key starts with 'AIza...'"
+            "If on Vercel: Add VITE_GEMINI_API_KEY to Environment Variables and REDEPLOY.",
+            "If on Local: Add VITE_GEMINI_API_KEY to your .env file.",
+            "If in AI Studio: Ensure the Gemini API is enabled in your project.",
+            "Note: The key must be a valid Google AI Studio API Key."
           ],
           upgradePlan: "Once configured, this AI will provide real-time audits and custom upgrade plans for your clients."
         });
@@ -524,6 +530,8 @@ function AiSearch({ lang }: { lang: Language }) {
       }
 
       const ai = new GoogleGenAI({ apiKey });
+      console.log("AI Search: Initializing model gemini-3-flash-preview...");
+      
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: `Audit the digital presence of this business: "${query}". Focus on their website, Google Maps presence, and social media.`,
@@ -563,38 +571,55 @@ function AiSearch({ lang }: { lang: Language }) {
         }
       });
 
-      const data = JSON.parse(response.text);
+      const aiResponseText = response.text;
+      if (!aiResponseText) {
+        throw new Error("The AI returned an empty response. This can happen if the search grounding failed to find relevant information.");
+      }
+
+      const data = JSON.parse(aiResponseText);
       setSearchProgress(100);
       setTimeout(() => {
         setResult(data);
         setIsSearching(false);
       }, 500);
     } catch (error: any) {
-      console.error("Audit failed:", error);
-      const errorMessage = error?.message || "";
-      const isApiKeyError = errorMessage.includes("API_KEY_INVALID") || errorMessage.includes("403") || errorMessage.includes("key");
+      console.error("AI Search Error Details:", error);
+      
+      // Extract as much info as possible from the error
+      const errorMessage = error?.message || "Unknown error";
+      const errorStatus = error?.status || error?.code || "No status";
+      
+      let userFriendlyError = "We encountered an error while auditing this business.";
+      let errorDetails = [
+        `Error: ${errorMessage}`,
+        `Status: ${errorStatus}`,
+        "Please check the browser console (F12) for full technical details."
+      ];
+
+      if (errorMessage.includes("API_KEY_INVALID") || errorMessage.includes("403")) {
+        userFriendlyError = "Invalid API Key: The provided Gemini API Key is incorrect or restricted.";
+        errorDetails = [
+          "Check if the API Key is copied correctly from AI Studio.",
+          "Ensure the key has 'Google Search' enabled.",
+          "Verify your project billing/quota status in Google Cloud.",
+          "Try generating a new key in Google AI Studio."
+        ];
+      } else if (errorMessage.includes("quota") || errorMessage.includes("429")) {
+        userFriendlyError = "Rate Limit Exceeded: Too many requests at once.";
+        errorDetails = [
+          "Wait a minute and try again.",
+          "Check your Gemini API quota in AI Studio.",
+          "Consider using a different API key if this persists."
+        ];
+      }
 
       setResult({
         rating: 0,
         name: query,
         hasWebsite: false,
-        summary: isApiKeyError 
-          ? "Invalid API Key: The provided Gemini API Key is incorrect or restricted." 
-          : "We encountered an error while auditing this business. Please try again or contact us for a manual audit.",
-        details: isApiKeyError ? [
-          "Check if the API Key is copied correctly",
-          "Ensure the key has 'Google Search' enabled in AI Studio",
-          "Verify your project billing/quota status",
-          "Try generating a new key in Google AI Studio"
-        ] : [
-          "Search API connection issue",
-          "Rate limit or temporary outage",
-          "Please try a more specific name",
-          "Check your internet connection"
-        ],
-        upgradePlan: isApiKeyError 
-          ? "Please update your VITE_GEMINI_API_KEY in Vercel settings to restore AI functionality."
-          : "Contact The Søren Studio directly for a manual deep-dive audit and growth strategy."
+        summary: userFriendlyError,
+        details: errorDetails,
+        upgradePlan: "Contact The Søren Studio directly for a manual deep-dive audit and growth strategy if the AI is currently unavailable."
       });
       setIsSearching(false);
     } finally {
