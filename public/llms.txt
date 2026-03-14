@@ -1,0 +1,24 @@
+# The Søren Studio
+
+The Søren Studio is a premium digital agency specializing in turning clicks into customers for small businesses and large enterprises.
+
+## Core Services
+- **Website Creation**: Custom high-converting websites.
+- **Google Ranking Setup**: SEO, Google Business Profile optimization, and local search dominance.
+- **Hosting & Maintenance**: Secure, fast, and 24/7 managed hosting.
+- **Social Media Management**: Professional Instagram content and brand growth.
+
+## Business Model
+We bridge the gap between traditional businesses and the digital world. We provide transparent pricing with both yearly and monthly options.
+
+## Founders
+- **Nimeet Shah**: Trent Consultant.
+- **Dr. Kenil Shah**: Owner of XzeCure, ObeCure, and a working doctor.
+
+## Contact Information
+- **Location**: Ahmedabad, Gujarat, India.
+- **Website**: https://thesorenstudio.com
+- **Focus**: Customer conversion and sustainable digital growth.
+
+## AI Accessibility
+This site is designed to be machine-readable via semantic HTML and JSON-LD structured data. AI agents can find detailed service descriptions and pricing models in the structured data embedded in the home page.

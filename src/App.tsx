@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Globe, Smartphone, TrendingUp, Users, 
   CheckCircle2, Monitor, LayoutTemplate,
@@ -8,10 +8,11 @@ import {
   ShieldCheck, Heart, Zap, Award, Briefcase, Stethoscope,
   Utensils, Scissors, Dumbbell, Home, GraduationCap,
   MapPin, Clock, MessageCircle, Building2, Factory, Phone,
-  FileText, Shield, Globe2, Menu, X, ShoppingCart
+  FileText, Shield, Globe2, Menu, X, ShoppingCart,
+  TrendingUp as TrendingIcon
 } from "lucide-react";
 import { cn } from "./lib/utils";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BUSINESS_DATABASE } from "./data/businesses";
 
 const LOGO_URL = "https://raw.githubusercontent.com/XzeBitOP/SorenAssets/0385f974fa45012b25cdb9e9ab825d3dd10a7065/Website%20images/6D2E38AE-E45F-4861-96EB-B2FC8B03F4A2.png";
@@ -319,6 +320,156 @@ const translations = {
 };
 
 // --- Components ---
+
+function StartupAnimation({ onComplete }: { onComplete: () => void }) {
+  const [count, setCount] = useState(0);
+  
+  useEffect(() => {
+    const timer = setTimeout(onComplete, 3500);
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[200] bg-tmo-black flex flex-col items-center justify-center overflow-hidden"
+    >
+      <div className="relative w-full max-w-lg px-6">
+        {/* Logo Animation */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="flex justify-center mb-12"
+        >
+          <img src={LOGO_URL} alt="Logo" className="h-24 w-auto rounded-2xl shadow-[0_0_50px_rgba(250,204,21,0.3)]" />
+        </motion.div>
+
+        {/* Growing Profits */}
+        <motion.div 
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="flex items-center gap-4 mb-6 bg-white/5 p-4 rounded-2xl border border-white/10"
+        >
+          <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+            <TrendingUp className="w-6 h-6 text-green-400" />
+          </div>
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Revenue Growth</p>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-xl font-bold text-green-400"
+            >
+              +340% Profits
+            </motion.p>
+          </div>
+        </motion.div>
+
+        {/* Growing Customers */}
+        <motion.div 
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 1, duration: 0.8 }}
+          className="flex items-center gap-4 mb-6 bg-white/5 p-4 rounded-2xl border border-white/10"
+        >
+          <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center">
+            <Users className="w-6 h-6 text-blue-400" />
+          </div>
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Customer Base</p>
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-xl font-bold text-blue-400"
+            >
+              10k+ New Users
+            </motion.p>
+          </div>
+        </motion.div>
+
+        {/* Popularity */}
+        <motion.div 
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
+          className="flex items-center gap-4 bg-tmo-gold/10 p-4 rounded-2xl border border-tmo-gold/20"
+        >
+          <div className="w-12 h-12 bg-tmo-gold/20 rounded-full flex items-center justify-center">
+            <Star className="w-6 h-6 text-tmo-gold" />
+          </div>
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-tmo-gold/40">Market Status</p>
+            <p className="text-xl font-bold text-tmo-gold">#1 Trending Studio</p>
+          </div>
+        </motion.div>
+
+        {/* Progress Bar */}
+        <div className="absolute bottom-[-60px] left-6 right-6 h-1 bg-white/5 rounded-full overflow-hidden">
+          <motion.div 
+            initial={{ width: "0%" }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 3, ease: "easeInOut" }}
+            className="h-full bg-tmo-gold"
+          />
+        </div>
+      </div>
+
+      {/* Background Particles */}
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={i}
+          initial={{ 
+            x: Math.random() * window.innerWidth, 
+            y: window.innerHeight + 10,
+            opacity: 0 
+          }}
+          animate={{ 
+            y: -100,
+            opacity: [0, 1, 0]
+          }}
+          transition={{ 
+            duration: 2 + Math.random() * 2, 
+            repeat: Infinity, 
+            delay: Math.random() * 2 
+          }}
+          className="absolute w-1 h-1 bg-tmo-gold rounded-full"
+        />
+      ))}
+    </motion.div>
+  );
+}
+
+function ConversionBubble({ message, isVisible }: { message: string, isVisible: boolean }) {
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5, y: 50, x: "-50%" }}
+          animate={{ opacity: 1, scale: 1, y: 0, x: "-50%" }}
+          exit={{ opacity: 0, scale: 0.5, y: -20, x: "-50%" }}
+          className="fixed bottom-24 left-1/2 z-[110] bg-white text-tmo-black px-6 py-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-2 border-tmo-gold flex items-center gap-4 min-w-[280px]"
+        >
+          <div className="w-12 h-12 bg-tmo-gold/20 rounded-full flex items-center justify-center shrink-0">
+            <TrendingIcon className="w-6 h-6 text-tmo-gold" />
+          </div>
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-tmo-black/40 mb-1">Estimated Growth</p>
+            <p className="text-sm font-bold leading-tight">{message}</p>
+          </div>
+          <motion.div 
+            initial={{ width: "100%" }}
+            animate={{ width: "0%" }}
+            transition={{ duration: 2, ease: "linear" }}
+            className="absolute bottom-0 left-0 h-1 bg-tmo-gold rounded-full"
+          />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 function Cart({ items, onRemove }: { items: string[], onRemove: (item: string) => void }) {
   if (items.length === 0) return null;
@@ -1248,7 +1399,18 @@ function Services({ lang, onAddToCart }: { lang: Language, onAddToCart: (item: s
       title: lang === 'hi' ? "Website निर्माण" : "Website Creation",
       desc: lang === 'hi' ? "विज़िटर्स को ग्राहकों में बदलने के लिए डिज़ाइन की गई कस्टम वेबसाइटें।" : "Custom websites designed to convert visitors into customers.",
       benefit: lang === 'hi' ? "भरोसा बनाकर और खरीदारी या बुकिंग को आसान बनाकर विज़िटर्स को भुगतान करने वाले ग्राहकों में बदलता है।" : "Turns visitors into paying customers by building trust and making it easy to buy or book.",
-      benefitIcon: IndianRupee
+      benefitIcon: IndianRupee,
+      animation: (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
+          <motion.div 
+            animate={{ y: [0, -10, 0], opacity: [0.3, 0.6, 0.3] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="absolute top-4 right-4"
+          >
+            <Monitor className="w-12 h-12" />
+          </motion.div>
+        </div>
+      )
     },
     {
       icon: Search,
@@ -1256,7 +1418,21 @@ function Services({ lang, onAddToCart }: { lang: Language, onAddToCart: (item: s
       desc: lang === 'hi' ? "Google Business प्रोफाइल ऑप्टिमाइज़ेशन, लोकल कीवर्ड सेटअप, मैप इंटीग्रेशन, रिव्यू सेटअप और बेसिक SEO।" : "Google Business profile optimization, local keyword setup, map integration, review setup, and basic website SEO.",
       price: "₹5,999",
       benefit: lang === 'hi' ? "जब लोकल ग्राहक आपकी सेवाओं की खोज करते हैं तो आपको Google पर आसानी से खोजने योग्य बनाता है।" : "Makes you easily discoverable on Google when local customers search for your services.",
-      benefitIcon: Rocket
+      benefitIcon: Rocket,
+      animation: (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+          <motion.div 
+            animate={{ 
+              x: [10, 80, 10, 40, 10], 
+              y: [10, 30, 60, 20, 10] 
+            }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+            className="absolute"
+          >
+            <Search className="w-16 h-16 text-tmo-gold/40" />
+          </motion.div>
+        </div>
+      )
     },
     {
       icon: Server,
@@ -1270,7 +1446,32 @@ function Services({ lang, onAddToCart }: { lang: Language, onAddToCart: (item: s
       title: lang === 'hi' ? "सोशल मीडिया मैनेजमेंट" : "Social Media Management",
       desc: lang === 'hi' ? "आपके ब्रांड के लिए प्रोफेशनल Instagram कंटेंट।" : "Professional Instagram content for your brand.",
       benefit: lang === 'hi' ? "एक वफादार समुदाय बनाता है और आपके ब्रांड को बार-बार बिजनेस के लिए याद रखता है।" : "Builds a loyal community and keeps your brand top-of-mind for repeat business.",
-      benefitIcon: Heart
+      benefitIcon: Heart,
+      animation: (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {[...Array(5)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ 
+                opacity: [0, 1, 0], 
+                scale: [0.5, 1.2, 0.8],
+                y: [-20, -60],
+                x: (i - 2) * 20
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                delay: i * 0.4,
+                ease: "easeOut"
+              }}
+              className="absolute bottom-10 left-1/2 text-tmo-gold"
+            >
+              {i % 2 === 0 ? <Heart className="w-4 h-4 fill-current" /> : <MessageCircle className="w-4 h-4" />}
+            </motion.div>
+          ))}
+        </div>
+      )
     }
   ];
 
@@ -1293,9 +1494,10 @@ function Services({ lang, onAddToCart }: { lang: Language, onAddToCart: (item: s
               <motion.div 
                 key={i}
                 whileHover={{ y: -5 }}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors flex flex-col group"
+                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors flex flex-col group relative overflow-hidden"
               >
-                <div className="flex justify-between items-start mb-4">
+                {s.animation}
+                <div className="flex justify-between items-start mb-4 relative z-10">
                   <s.icon className="w-10 h-10 text-tmo-gold" />
                   <button 
                     onClick={() => onAddToCart(s.title)}
@@ -1304,10 +1506,10 @@ function Services({ lang, onAddToCart }: { lang: Language, onAddToCart: (item: s
                     <ShoppingCart className="w-4 h-4" />
                   </button>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">{s.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed mb-4 flex-1">{s.desc}</p>
-                {s.price && <p className="text-tmo-gold font-bold mb-4">{s.price}</p>}
-                <div className="bg-tmo-gold/10 border border-tmo-gold/20 rounded-xl p-4 mt-auto group-hover:border-tmo-gold/40 transition-colors">
+                <h3 className="text-xl font-semibold mb-2 relative z-10">{s.title}</h3>
+                <p className="text-white/60 text-sm leading-relaxed mb-4 flex-1 relative z-10">{s.desc}</p>
+                {s.price && <p className="text-tmo-gold font-bold mb-4 relative z-10">{s.price}</p>}
+                <div className="bg-tmo-gold/10 border border-tmo-gold/20 rounded-xl p-4 mt-auto group-hover:border-tmo-gold/40 transition-colors relative z-10">
                   <div className="flex items-center gap-3">
                     <div className="p-2 shimmer-gold-bg text-tmo-black rounded-lg">
                       <s.benefitIcon className="w-4 h-4" />
@@ -1589,7 +1791,25 @@ function AddOns({ lang, onSelectAddOn }: { lang: Language, onSelectAddOn: (addon
       name: lang === 'hi' ? "प्रोफेशनल फोटोशूट" : "Professional Photoshoot", 
       price: "₹10,000", 
       desc: lang === 'hi' ? "दुकान, उत्पादों, टीम और कार्यक्षेत्र की उच्च गुणवत्ता वाली तस्वीरें। वेबसाइट और सोशल मीडिया के लिए बिल्कुल सही।" : "High-quality photos of shop, products, team, and workspace. Perfect for website and social media.",
-      benefit: lang === 'hi' ? "उच्च गुणवत्ता वाले दृश्यों के साथ आपके ब्रांड के कथित मूल्य को तुरंत बढ़ाता है और अपार विश्वास बनाता है।" : "Instantly elevates your brand's perceived value and builds immense trust with high-quality visuals."
+      benefit: lang === 'hi' ? "उच्च गुणवत्ता वाले दृश्यों के साथ आपके ब्रांड के कथित मूल्य को तुरंत बढ़ाता है और अपार विश्वास बनाता है।" : "Instantly elevates your brand's perceived value and builds immense trust with high-quality visuals.",
+      animation: (
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.8, 0] }}
+              transition={{ 
+                duration: 0.2, 
+                repeat: Infinity, 
+                repeatDelay: 1.5 + Math.random() * 2,
+                delay: i * 0.5
+              }}
+              className="absolute inset-0 bg-white"
+            />
+          ))}
+        </div>
+      )
     },
     { 
       name: lang === 'hi' ? "Google / Facebook पेज + Ad सेटअप" : "Google / Facebook Page + Ad Setup", 
@@ -1852,10 +2072,33 @@ export default function App() {
   const [likedDemo, setLikedDemo] = useState<boolean>(false);
   const [cartItems, setCartItems] = useState<string[]>([]);
   const [showCartAnimation, setShowCartAnimation] = useState(false);
+  const [conversionMessage, setConversionMessage] = useState("");
+  const [showConversion, setShowConversion] = useState(false);
+  const [showStartup, setShowStartup] = useState(true);
+
+  const getGainMessage = (item: string) => {
+    const itemLower = item.toLowerCase();
+    if (itemLower.includes("starter")) return "Estimated gain: 50-100 new local customers per month.";
+    if (itemLower.includes("growth")) return "Estimated gain: 150-250 high-intent leads per month.";
+    if (itemLower.includes("business")) return "Estimated gain: 300-500 customers via local SEO dominance.";
+    if (itemLower.includes("brand")) return "Estimated gain: 800-1200 customers through automated sales funnel.";
+    if (itemLower.includes("enterprise")) return "Estimated gain: 2000+ customers with full digital department.";
+    if (itemLower.includes("google ranking")) return "Estimated gain: 200-300 customers from local search visibility.";
+    if (itemLower.includes("website creation")) return "Estimated gain: 40% increase in visitor-to-customer conversion.";
+    if (itemLower.includes("social media")) return "Estimated gain: 500+ brand impressions and 50+ direct leads.";
+    if (itemLower.includes("photoshoot")) return "Estimated gain: 25% increase in brand trust and engagement.";
+    return "Estimated gain: 100-200 new customer interactions.";
+  };
 
   const addToCart = (item: string, targetSection: string = 'pricing') => {
     setCartItems(prev => [...prev, item]);
     setShowCartAnimation(true);
+    
+    // Trigger conversion bubble
+    setConversionMessage(getGainMessage(item));
+    setShowConversion(true);
+    setTimeout(() => setShowConversion(false), 2000);
+
     setTimeout(() => setShowCartAnimation(false), 3000);
     
     if (targetSection === 'pricing') {
@@ -1925,10 +2168,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-tmo-black text-white selection:bg-tmo-gold selection:text-tmo-black">
+      <AnimatePresence>
+        {showStartup && <StartupAnimation onComplete={() => setShowStartup(false)} />}
+      </AnimatePresence>
       <Navbar lang={lang} setLang={setLang} currentPage={currentPage} setCurrentPage={setCurrentPage} />
       <main className="pt-20">
         {renderPage()}
       </main>
+      <ConversionBubble message={conversionMessage} isVisible={showConversion} />
       <Cart items={cartItems} onRemove={(item) => setCartItems(prev => prev.filter(i => i !== item))} />
       <Footer lang={lang} />
     </div>
