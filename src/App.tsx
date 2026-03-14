@@ -8,7 +8,7 @@ import {
   ShieldCheck, Heart, Zap, Award, Briefcase, Stethoscope,
   Utensils, Scissors, Dumbbell, Home, GraduationCap,
   MapPin, Clock, MessageCircle, Building2, Factory, Phone,
-  FileText, Shield, Globe2, Menu, X
+  FileText, Shield, Globe2, Menu, X, ShoppingCart
 } from "lucide-react";
 import { cn } from "./lib/utils";
 import React, { useState } from "react";
@@ -343,6 +343,35 @@ const translations = {
 
 // --- Components ---
 
+function Cart({ items, onRemove }: { items: string[], onRemove: (item: string) => void }) {
+  if (items.length === 0) return null;
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.8, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      className="fixed bottom-8 right-8 z-[100] bg-tmo-gold text-tmo-black p-4 rounded-2xl shadow-2xl border border-white/20 flex items-center gap-4"
+    >
+      <div className="relative">
+        <ShoppingCart className="w-6 h-6" />
+        <span className="absolute -top-2 -right-2 bg-tmo-black text-tmo-gold text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border border-tmo-gold">
+          {items.length}
+        </span>
+      </div>
+      <div className="flex flex-col">
+        <span className="text-xs font-bold uppercase tracking-wider">Items Added</span>
+        <span className="text-sm font-medium truncate max-w-[150px]">{items[items.length - 1]}</span>
+      </div>
+      <a 
+        href="#pricing" 
+        className="bg-tmo-black text-tmo-gold px-4 py-2 rounded-xl text-xs font-bold hover:bg-white transition-colors"
+      >
+        View Plans
+      </a>
+    </motion.div>
+  );
+}
+
 function Navbar({ lang, setLang, currentPage, setCurrentPage }: { 
   lang: Language, 
   setLang: (l: Language) => void,
@@ -543,7 +572,7 @@ function AiSearch({ lang }: { lang: Language }) {
         <button 
           type="submit" 
           disabled={isSearching}
-          className="bg-tmo-gold text-tmo-black px-6 py-3 rounded-xl font-bold hover:bg-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="shimmer-gold-bg text-tmo-black px-6 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isSearching ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
           {isSearching ? t.searching : t.checkBtn}
@@ -744,7 +773,7 @@ function Hero({ lang, setLang }: { lang: Language, setLang: (l: Language) => voi
         >
           <a 
             href="#contact" 
-            className="w-full sm:w-auto bg-tmo-gold text-tmo-black px-8 py-4 rounded-full text-lg font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2"
+            className="w-full sm:w-auto shimmer-gold-bg text-tmo-black px-8 py-4 rounded-full text-lg font-semibold hover:bg-white transition-colors flex items-center justify-center gap-2"
           >
             {t.bookBtn} <ArrowRight className="w-5 h-5" />
           </a>
@@ -1151,7 +1180,7 @@ function DemoSite({ lang, likedDemo, setLikedDemo }: { lang: Language, likedDemo
   );
 }
 
-function Services({ lang }: { lang: Language }) {
+function Services({ lang, onAddToCart }: { lang: Language, onAddToCart: (item: string) => void }) {
   const t = translations[lang].services;
   const services = [
     {
@@ -1192,27 +1221,38 @@ function Services({ lang }: { lang: Language }) {
           <div>
             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">{t.title}</h2>
             <p className="text-white/60 text-lg mb-8">{t.subtitle}</p>
-            <a href="#contact" className="inline-flex items-center gap-2 text-tmo-gold font-semibold hover:text-white transition-colors">
+            <button 
+              onClick={() => onAddToCart("Full Digital Package")}
+              className="inline-flex items-center gap-2 shimmer-gold font-semibold hover:text-white transition-colors"
+            >
               {lang === 'hi' ? "अपना प्रोजेक्ट शुरू करें" : "Start your project"} <ArrowRight className="w-4 h-4" />
-            </a>
+            </button>
           </div>
           <div className="grid sm:grid-cols-2 gap-6">
             {services.map((s, i) => (
               <motion.div 
                 key={i}
                 whileHover={{ y: -5 }}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors flex flex-col"
+                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors flex flex-col group"
               >
-                <s.icon className="w-10 h-10 text-tmo-gold mb-4" />
+                <div className="flex justify-between items-start mb-4">
+                  <s.icon className="w-10 h-10 text-tmo-gold" />
+                  <button 
+                    onClick={() => onAddToCart(s.title)}
+                    className="p-2 bg-white/5 rounded-full hover:shimmer-gold-bg hover:text-tmo-black transition-all opacity-0 group-hover:opacity-100"
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                  </button>
+                </div>
                 <h3 className="text-xl font-semibold mb-2">{s.title}</h3>
                 <p className="text-white/60 text-sm leading-relaxed mb-4 flex-1">{s.desc}</p>
                 {s.price && <p className="text-tmo-gold font-bold mb-4">{s.price}</p>}
-                <div className="bg-tmo-gold/10 border border-tmo-gold/20 rounded-xl p-4 mt-auto group">
+                <div className="bg-tmo-gold/10 border border-tmo-gold/20 rounded-xl p-4 mt-auto group-hover:border-tmo-gold/40 transition-colors">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-tmo-gold text-tmo-black rounded-lg group-hover:scale-110 transition-transform">
+                    <div className="p-2 shimmer-gold-bg text-tmo-black rounded-lg">
                       <s.benefitIcon className="w-4 h-4" />
                     </div>
-                    <p className="text-tmo-gold text-xs font-bold uppercase tracking-widest">{lang === 'hi' ? "फायदा" : "Benefit"}</p>
+                    <p className="text-tmo-gold text-xs font-bold uppercase tracking-widest shimmer-gold">{lang === 'hi' ? "फायदा" : "Benefit"}</p>
                   </div>
                   <p className="text-white/90 text-sm mt-2 leading-tight">{s.benefit}</p>
                 </div>
@@ -1367,7 +1407,7 @@ function Pricing({ lang, onSelectPlan }: { lang: Language, onSelectPlan: (plan: 
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                   className={cn(
                     "absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap shadow-lg",
-                    plan.popular ? "bg-tmo-gold text-tmo-black" : "bg-white text-black"
+                    plan.popular ? "bg-white text-black" : "bg-white text-black"
                   )}
                 >
                   {plan.badge}
@@ -1375,16 +1415,16 @@ function Pricing({ lang, onSelectPlan }: { lang: Language, onSelectPlan: (plan: 
               )}
               <h3 className="text-2xl font-serif mb-2 mt-2 flex items-center gap-2">
                 {plan.name === "Starter" && <Star className="w-5 h-5 text-tmo-gold fill-tmo-gold" />}
-                {plan.name} {t.plan}
+                <span className={plan.name === "Starter" ? "" : ""}>{plan.name} {t.plan}</span>
               </h3>
               <div className="mb-4">
-                <span className="text-4xl font-bold">{plan.price}</span>
+                <span className={cn("text-4xl font-bold", plan.popular ? "" : "")}>{plan.price}</span>
                 <span className="text-white/50 text-sm ml-1">{plan.period}</span>
               </div>
               <p className="text-sm text-white/70 mb-4 min-h-[40px]">{plan.desc}</p>
               
               <div className="bg-tmo-gold/10 border border-tmo-gold/20 rounded-lg p-3 mb-6">
-                <p className="text-tmo-gold text-xs font-medium"><span className="font-bold">{t.benefit}:</span> {plan.benefit}</p>
+                <p className="text-tmo-gold text-xs font-medium shimmer-gold"><span className="font-bold">{t.benefit}:</span> {plan.benefit}</p>
               </div>
               
               <ul className="space-y-4 mb-8 flex-1">
@@ -1414,8 +1454,8 @@ function Pricing({ lang, onSelectPlan }: { lang: Language, onSelectPlan: (plan: 
               <button 
                 onClick={() => onSelectPlan(plan.name)}
                 className={cn(
-                  "w-full py-3 rounded-full text-center font-semibold transition-colors mt-auto",
-                  plan.popular ? "bg-tmo-gold text-tmo-black hover:bg-white" : "bg-white/10 text-white hover:bg-white/20"
+                  "w-full py-3 rounded-full text-center font-semibold transition-all duration-300 mt-auto",
+                  plan.popular ? "shimmer-gold-bg text-tmo-black hover:scale-105" : "bg-white/10 text-white hover:bg-white/20"
                 )}
               >
                 {t.choose} {plan.name}
@@ -1518,17 +1558,18 @@ function AddOns({ lang, onSelectAddOn }: { lang: Language, onSelectAddOn: (addon
             <div key={i} className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col">
               <h3 className="text-xl font-bold mb-2">{addon.name}</h3>
               <div className="mb-4">
-                <span className="text-2xl font-bold text-tmo-gold">{addon.price}</span>
+                <span className="text-2xl font-bold shimmer-gold">{addon.price}</span>
                 {addon.period && <span className="text-white/50 text-sm ml-1">{addon.period}</span>}
               </div>
               <p className="text-sm text-white/70 leading-relaxed mb-4 flex-1">{addon.desc}</p>
               <div className="bg-tmo-gold/10 border border-tmo-gold/20 rounded-lg p-3 mb-4">
-                <p className="text-tmo-gold text-xs font-medium"><span className="font-bold">{lang === 'hi' ? "लाभ" : "Benefit"}:</span> {addon.benefit}</p>
+                <p className="text-tmo-gold text-xs font-medium shimmer-gold"><span className="font-bold">{lang === 'hi' ? "लाभ" : "Benefit"}:</span> {addon.benefit}</p>
               </div>
               <button 
                 onClick={() => onSelectAddOn(addon.name)}
-                className="w-full py-2 rounded-full text-sm font-semibold bg-white/10 text-white hover:bg-white/20 transition-colors mt-auto"
+                className="w-full py-2 rounded-full text-sm font-semibold bg-white/10 text-white hover:shimmer-gold-bg hover:text-tmo-black transition-all duration-300 mt-auto flex items-center justify-center gap-2"
               >
+                <ShoppingCart className="w-4 h-4" />
                 {t.addBtn}
               </button>
             </div>
@@ -1684,7 +1725,7 @@ function Contact({
                 <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-tmo-gold transition-colors [color-scheme:dark]" />
               </div>
             </div>
-            <button type="submit" className="w-full bg-tmo-gold text-tmo-black font-bold text-lg py-4 rounded-xl hover:bg-white transition-colors mt-4">
+            <button type="submit" className="w-full shimmer-gold-bg text-tmo-black font-bold text-lg py-4 rounded-xl hover:scale-[1.02] transition-all mt-4">
               {tPricing.bookBtn}
             </button>
           </form>
@@ -1749,19 +1790,35 @@ export default function App() {
   const [selectedPlan, setSelectedPlan] = useState<string>("");
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [likedDemo, setLikedDemo] = useState<boolean>(false);
+  const [cartItems, setCartItems] = useState<string[]>([]);
+  const [showCartAnimation, setShowCartAnimation] = useState(false);
+
+  const addToCart = (item: string, targetSection: string = 'pricing') => {
+    setCartItems(prev => [...prev, item]);
+    setShowCartAnimation(true);
+    setTimeout(() => setShowCartAnimation(false), 3000);
+    
+    if (targetSection === 'pricing') {
+      const pricingSection = document.getElementById('pricing');
+      if (pricingSection) {
+        pricingSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else if (targetSection === 'contact') {
+      setCurrentPage('contact');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const handleSelectPlan = (plan: string) => {
     setSelectedPlan(plan);
-    setCurrentPage('contact');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    addToCart(plan + " Plan", 'contact');
   };
 
   const handleSelectAddOn = (addon: string) => {
     if (!selectedAddOns.includes(addon)) {
       setSelectedAddOns([...selectedAddOns, addon]);
+      addToCart(addon, 'contact');
     }
-    setCurrentPage('contact');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const renderPage = () => {
@@ -1769,7 +1826,7 @@ export default function App() {
       case 'services':
         return (
           <>
-            <Services lang={lang} />
+            <Services lang={lang} onAddToCart={(item) => addToCart(item, 'pricing')} />
             <WebsiteTypes lang={lang} />
             <AddOns lang={lang} onSelectAddOn={handleSelectAddOn} />
             <Pricing lang={lang} onSelectPlan={handleSelectPlan} />
@@ -1812,6 +1869,7 @@ export default function App() {
       <main className="pt-20">
         {renderPage()}
       </main>
+      <Cart items={cartItems} onRemove={(item) => setCartItems(prev => prev.filter(i => i !== item))} />
       <Footer lang={lang} />
     </div>
   );

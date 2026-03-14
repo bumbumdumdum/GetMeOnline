@@ -2,11 +2,50 @@
 
 @theme {
   --color-tmo-black: #111111;
-  --color-tmo-gold: #C9A227;
+  --color-tmo-gold: #FACC15;
+  --color-tmo-gold-dark: #CA8A04;
   --color-tmo-white: #FFFFFF;
   
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+
+  --animate-shimmer: shimmer 8s infinite linear;
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+}
+
+@layer utilities {
+  .shimmer-gold {
+    background: linear-gradient(
+      90deg,
+      #CA8A04 0%,
+      #FACC15 40%,
+      #FEF08A 50%,
+      #FACC15 60%,
+      #CA8A04 100%
+    );
+    background-size: 200% auto;
+    animation: var(--animate-shimmer);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+  }
+
+  .shimmer-gold-bg {
+    background: linear-gradient(
+      90deg,
+      #CA8A04 0%,
+      #FACC15 40%,
+      #FEF08A 50%,
+      #FACC15 60%,
+      #CA8A04 100%
+    );
+    background-size: 200% auto;
+    animation: var(--animate-shimmer);
+  }
 }
 
 @layer base {
