@@ -503,10 +503,24 @@ function AiSearch({ lang }: { lang: Language }) {
 
     try {
       // Compatibility for both local environment and Vercel/GitHub
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : '');
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
       
       if (!apiKey) {
-        throw new Error("Gemini API Key not found. Please set VITE_GEMINI_API_KEY in your environment variables.");
+        setResult({
+          rating: 0,
+          name: query,
+          hasWebsite: false,
+          summary: "API Key Missing: The AI Search requires a Gemini API Key to function on Vercel.",
+          details: [
+            "1. Go to Vercel Dashboard > Settings > Environment Variables",
+            "2. Add VITE_GEMINI_API_KEY with your Gemini API Key",
+            "3. Redeploy your application to apply changes",
+            "Note: Ensure the key starts with 'AIza...'"
+          ],
+          upgradePlan: "Once configured, this AI will provide real-time audits and custom upgrade plans for your clients."
+        });
+        setIsSearching(false);
+        return;
       }
 
       const ai = new GoogleGenAI({ apiKey });
@@ -555,15 +569,32 @@ function AiSearch({ lang }: { lang: Language }) {
         setResult(data);
         setIsSearching(false);
       }, 500);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Audit failed:", error);
+      const errorMessage = error?.message || "";
+      const isApiKeyError = errorMessage.includes("API_KEY_INVALID") || errorMessage.includes("403") || errorMessage.includes("key");
+
       setResult({
         rating: 0,
         name: query,
         hasWebsite: false,
-        summary: "We encountered an error while auditing this business. Please try again or contact us for a manual audit.",
-        details: ["Search API connection issue", "Rate limit or temporary outage", "Please try a more specific name"],
-        upgradePlan: "Contact The Søren Studio directly for a manual deep-dive audit and growth strategy."
+        summary: isApiKeyError 
+          ? "Invalid API Key: The provided Gemini API Key is incorrect or restricted." 
+          : "We encountered an error while auditing this business. Please try again or contact us for a manual audit.",
+        details: isApiKeyError ? [
+          "Check if the API Key is copied correctly",
+          "Ensure the key has 'Google Search' enabled in AI Studio",
+          "Verify your project billing/quota status",
+          "Try generating a new key in Google AI Studio"
+        ] : [
+          "Search API connection issue",
+          "Rate limit or temporary outage",
+          "Please try a more specific name",
+          "Check your internet connection"
+        ],
+        upgradePlan: isApiKeyError 
+          ? "Please update your VITE_GEMINI_API_KEY in Vercel settings to restore AI functionality."
+          : "Contact The Søren Studio directly for a manual deep-dive audit and growth strategy."
       });
       setIsSearching(false);
     } finally {
