@@ -1,3 +1,4 @@
+import { GoogleGenAI, Type } from "@google/genai";
 import { motion } from "framer-motion";
 import { 
   Globe, Smartphone, TrendingUp, Users, 
@@ -15,30 +16,6 @@ import React, { useState } from "react";
 
 const LOGO_URL = "https://raw.githubusercontent.com/XzeBitOP/SorenAssets/0385f974fa45012b25cdb9e9ab825d3dd10a7065/Website%20images/6D2E38AE-E45F-4861-96EB-B2FC8B03F4A2.png";
 const VIDEO_URL = "https://raw.githubusercontent.com/bumbumdumdum/Website-media/228b75dc532ce4847376361eb60e702adf384cf7/gemini_generated_video_8CF985E8.mov";
-
-const BUSINESS_DATABASE = [
-  "Tata Consultancy Services", "Infosys", "Tech Mahindra", "Azilen Technologies", "eInfochips",
-  "Agile Infoways", "RadixWeb", "TatvaSoft", "RapidOps", "Netclues", "Prompt Softech",
-  "Bacancy Technology", "Hyperlink Infosystem", "OpenXcell", "Vrinsoft Technology",
-  "AllianceTek", "Magneto IT Solutions", "AddWeb Solution", "Bytes Technolab", "Codal",
-  "WPWeb Infotech", "Brainvire Infotech", "i-HiddenTalent", "SharpQuest", "Instinctools",
-  "Agashiye Restaurant", "Gordhan Thal", "Rajwadu", "Vishalla", "Barbeque Nation Ahmedabad",
-  "The Green House", "Swati Snacks", "Tomato’s Restaurant", "Mirch Masala", "Timpani Restaurant",
-  "Pakwan Dining Hall", "Honest Restaurant", "Sankalp Restaurant", "Gwalia Sweets", "Upper Crust Cafe",
-  "Jawed Habib Salon", "Kapil’s Salon", "Lakme Salon", "Enrich Salon", "K3 Salon",
-  "Femiluxe Salon", "Kallistaa Salon", "Blades & Scissors Salon", "Toni & Guy Salon", "Looks Salon",
-  "Apollo Hospitals Ahmedabad", "Sterling Hospital", "Shalby Hospital", "Zydus Hospital",
-  "KD Hospital", "HCG Cancer Centre", "SAL Hospital", "Narayana Multispeciality Hospital",
-  "CIMS Hospital", "XzeCure Home care", "Adani Realty", "Godrej Properties", "Shilp Group",
-  "Bakeri Group", "Arvind SmartSpaces", "Ganesh Housing", "Savvy Infrastructure", "Shivalik Group",
-  "Siddhi Group", "Shyam Group", "Allen Career Institute Ahmedabad", "Aakash Institute",
-  "BYJU’S Tuition Centre", "Career Launcher Ahmedabad", "IMS Learning Centre", "TIME Coaching Centre",
-  "Resonance Coaching", "Toppers Academy", "Eklavya Education", "Knowledge High School",
-  "Gold’s Gym Ahmedabad", "Anytime Fitness", "Cult Fit", "Bodyline Gym", "Fitness First Ahmedabad",
-  "Ozone Fitness", "Talwalkars Gym", "Muscle Factory Gym", "Spartan Fitness", "Iron Paradise Gym",
-  "Hyatt Regency Ahmedabad", "Taj Skyline", "ITC Narmada", "Novotel Ahmedabad", "Courtyard by Marriott",
-  "Lemon Tree Hotel", "Pride Plaza Hotel", "Fortune Landmark Hotel", "Radisson Blu Ahmedabad", "The Fern Hotel"
-];
 
 type Language = 'en' | 'hi';
 
@@ -488,12 +465,14 @@ function AiSearch({ lang }: { lang: Language }) {
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [searchEngine, setSearchEngine] = useState("");
+  const [searchProgress, setSearchProgress] = useState(0);
   const [result, setResult] = useState<{ 
     rating: number, 
     name: string, 
     hasWebsite: boolean,
     summary: string,
-    details: string[]
+    details: string[],
+    upgradePlan: string
   } | null>(null);
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -502,54 +481,94 @@ function AiSearch({ lang }: { lang: Language }) {
     
     setIsSearching(true);
     setResult(null);
+    setSearchProgress(0);
     
-    const engines = ["Local Database Search", "SEO Analysis", "Presence Audit", "Website Check"];
+    const engines = [
+      { msg: "Connecting to Google Search Grounding...", progress: 10 },
+      { msg: "Scanning official website infrastructure...", progress: 25 },
+      { msg: "Website search done. Auditing Google Maps presence...", progress: 45 },
+      { msg: "Google Maps audit done. Checking social media accounts...", progress: 65 },
+      { msg: "Social media accounts search done. Analyzing local directories...", progress: 85 },
+      { msg: "Finalizing Visibility Score and Søren Studio Upgrade Plan...", progress: 95 }
+    ];
+
     let step = 0;
     const interval = setInterval(() => {
-      setSearchEngine(engines[step % engines.length]);
-      step++;
-    }, 1000);
-
-    // Simulate 4-5 second search
-    setTimeout(() => {
-      clearInterval(interval);
-      const found = BUSINESS_DATABASE.some(biz => 
-        biz.toLowerCase().includes(query.toLowerCase()) || 
-        query.toLowerCase().includes(biz.toLowerCase())
-      );
-
-      if (found) {
-        const score = Math.floor(Math.random() * (90 - 85 + 1)) + 85;
-        setResult({
-          rating: score,
-          name: query,
-          hasWebsite: true,
-          summary: `${query} is a well-established business in our database with a strong digital foundation.`,
-          details: [
-            "Official website detected and verified",
-            "Google Business profile is active and optimized",
-            "Strong social media presence across platforms",
-            "Mobile responsiveness is excellent",
-            "Page load speed is within optimal range"
-          ]
-        });
-      } else {
-        setResult({
-          rating: 15,
-          name: query,
-          hasWebsite: false,
-          summary: "We couldn't find this business in our verified database. This usually means a weak or non-existent digital presence.",
-          details: [
-            "No official website found in our records",
-            "Google Business profile is unoptimized or missing",
-            "Low social media visibility",
-            "Potential loss of 70% online customers",
-            "Immediate digital intervention recommended"
-          ]
-        });
+      if (step < engines.length) {
+        setSearchEngine(engines[step].msg);
+        setSearchProgress(engines[step].progress);
+        step++;
       }
+    }, 1500);
+
+    try {
+      // Compatibility for both local environment and Vercel/GitHub
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : '');
+      
+      if (!apiKey) {
+        throw new Error("Gemini API Key not found. Please set VITE_GEMINI_API_KEY in your environment variables.");
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
+      const response = await ai.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: `Audit the digital presence of this business: "${query}". Focus on their website, Google Maps presence, and social media.`,
+        config: {
+          systemInstruction: `You are a Digital Presence Auditor for 'The Søren Studio'. Your task is to audit a business's online visibility using Google Search. 
+          Check for:
+          1. Official Website (Domain, mobile-friendliness).
+          2. Google Business Profile (Maps presence, ratings, reviews).
+          3. Social Media (Instagram, Facebook, LinkedIn activity).
+          4. Local Directories.
+
+          Calculate a Visibility Score from 0 to 100 based on these pillars.
+          Provide a concise summary and 5 specific audit details.
+          
+          CRITICAL: Also provide a 'Søren Studio Upgrade Plan'. Explain specifically how The Søren Studio will upgrade their existing infrastructure (e.g., building a high-converting interactive website, automating their Google Business Profile, or managing their Instagram) and how this will directly help their business grow (e.g., 'increase leads by 40%', 'save 10 hours of manual work weekly').
+          
+          If the business name is generic or multiple exist, audit the most prominent one or provide a general assessment of that brand name's visibility.
+          Return the result in JSON format matching the schema.`,
+          tools: [{ googleSearch: {} }],
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              rating: { type: Type.INTEGER, description: "Visibility score from 0-100" },
+              name: { type: Type.STRING, description: "The business name found" },
+              hasWebsite: { type: Type.BOOLEAN, description: "Whether an official website was found" },
+              summary: { type: Type.STRING, description: "A 1-2 sentence summary of their presence" },
+              details: {
+                type: Type.ARRAY,
+                items: { type: Type.STRING },
+                description: "5 specific points found during the audit"
+              },
+              upgradePlan: { type: Type.STRING, description: "How The Søren Studio will upgrade their infrastructure and help them grow" }
+            },
+            required: ["rating", "name", "hasWebsite", "summary", "details", "upgradePlan"]
+          }
+        }
+      });
+
+      const data = JSON.parse(response.text);
+      setSearchProgress(100);
+      setTimeout(() => {
+        setResult(data);
+        setIsSearching(false);
+      }, 500);
+    } catch (error) {
+      console.error("Audit failed:", error);
+      setResult({
+        rating: 0,
+        name: query,
+        hasWebsite: false,
+        summary: "We encountered an error while auditing this business. Please try again or contact us for a manual audit.",
+        details: ["Search API connection issue", "Rate limit or temporary outage", "Please try a more specific name"],
+        upgradePlan: "Contact The Søren Studio directly for a manual deep-dive audit and growth strategy."
+      });
       setIsSearching(false);
-    }, 4500);
+    } finally {
+      clearInterval(interval);
+    }
   };
 
   return (
@@ -580,8 +599,44 @@ function AiSearch({ lang }: { lang: Language }) {
       </form>
 
       {isSearching && (
-        <div className="mt-6 text-center animate-pulse">
-          <p className="text-tmo-gold font-mono text-sm">{t.searchingOn} {searchEngine}...</p>
+        <div className="mt-8 space-y-6">
+          <div className="space-y-2">
+            <div className="flex justify-between text-xs font-mono text-tmo-gold">
+              <span>{searchEngine}</span>
+              <span>{searchProgress}%</span>
+            </div>
+            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: `${searchProgress}%` }}
+                className="h-full bg-tmo-gold shadow-[0_0_10px_rgba(250,204,21,0.5)]"
+              />
+            </div>
+          </div>
+
+          {/* Skeleton Loader */}
+          <div className="rounded-3xl bg-tmo-black/50 border border-white/5 p-6 space-y-6 animate-pulse">
+            <div className="flex justify-between items-start">
+              <div className="space-y-3">
+                <div className="h-8 w-48 bg-white/10 rounded-lg" />
+                <div className="h-4 w-24 bg-white/5 rounded-full" />
+              </div>
+              <div className="h-16 w-16 rounded-full bg-white/10" />
+            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <div className="h-3 w-20 bg-tmo-gold/20 rounded" />
+                <div className="h-4 w-full bg-white/5 rounded" />
+                <div className="h-4 w-5/6 bg-white/5 rounded" />
+              </div>
+              <div className="space-y-3">
+                <div className="h-3 w-20 bg-white/10 rounded" />
+                <div className="h-3 w-full bg-white/5 rounded" />
+                <div className="h-3 w-full bg-white/5 rounded" />
+                <div className="h-3 w-full bg-white/5 rounded" />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -654,47 +709,67 @@ function AiSearch({ lang }: { lang: Language }) {
           </div>
           
           {/* Content */}
-          <div className="p-8 grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 text-tmo-gold">
-                <Zap className="w-4 h-4" />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em]">AI Summary</span>
-              </div>
-              <p className="text-lg text-white/90 leading-relaxed font-serif italic">
-                "{result.summary}"
-              </p>
-            </div>
-            
-            <div className="space-y-6">
-              <div>
-                <div className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-4">{t.auditDetails}</div>
-                <ul className="space-y-3">
-                  {result.details.map((detail, i) => (
-                    <motion.li 
-                      initial={{ opacity: 0, x: 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.5 + (i * 0.1) }}
-                      key={i} 
-                      className="flex items-start gap-3 text-sm text-white/60 group"
-                    >
-                      <div className="mt-1.5 p-0.5 rounded-full bg-tmo-gold/20 text-tmo-gold group-hover:bg-tmo-gold group-hover:text-tmo-black transition-colors">
-                        <CheckCircle2 className="w-3 h-3" />
-                      </div>
-                      <span className="group-hover:text-white/90 transition-colors">{detail}</span>
-                    </motion.li>
-                  ))}
-                </ul>
+          <div className="p-8 space-y-8">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-tmo-gold">
+                  <Zap className="w-4 h-4" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">AI Summary</span>
+                </div>
+                <p className="text-lg text-white/90 leading-relaxed font-serif italic">
+                  "{result.summary}"
+                </p>
               </div>
               
-              <div className="pt-6 border-t border-white/5">
+              <div className="space-y-6">
+                <div>
+                  <div className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-4">{t.auditDetails}</div>
+                  <ul className="space-y-3">
+                    {result.details.map((detail, i) => (
+                      <motion.li 
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 + (i * 0.1) }}
+                        key={i} 
+                        className="flex items-start gap-3 text-sm text-white/60 group"
+                      >
+                        <div className="mt-1.5 p-0.5 rounded-full bg-tmo-gold/20 text-tmo-gold group-hover:bg-tmo-gold group-hover:text-tmo-black transition-colors">
+                          <CheckCircle2 className="w-3 h-3" />
+                        </div>
+                        <span className="group-hover:text-white/90 transition-colors">{detail}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Upgrade Plan Section */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2 }}
+              className="bg-tmo-gold/5 border border-tmo-gold/20 rounded-2xl p-6 relative overflow-hidden group"
+            >
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Rocket className="w-12 h-12 text-tmo-gold" />
+              </div>
+              <div className="flex items-center gap-2 text-tmo-gold mb-4">
+                <Award className="w-5 h-5" />
+                <span className="text-xs font-black uppercase tracking-[0.2em]">The Søren Studio Upgrade Plan</span>
+              </div>
+              <p className="text-white/80 leading-relaxed text-sm md:text-base">
+                {result.upgradePlan}
+              </p>
+              <div className="mt-6 flex justify-end">
                 <a 
                   href="#contact" 
-                  className="w-full py-4 rounded-xl bg-tmo-gold text-tmo-black font-bold text-sm flex items-center justify-center gap-2 hover:bg-white transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  className="px-6 py-3 rounded-xl bg-tmo-gold text-tmo-black font-bold text-sm flex items-center justify-center gap-2 hover:bg-white transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
                   {lang === 'hi' ? "ऑडिट रिपोर्ट ठीक करें" : "Fix Audit Report"} <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
       )}
