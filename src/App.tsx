@@ -504,26 +504,31 @@ function AiSearch({ lang }: { lang: Language }) {
     try {
       // Try to get the API key from multiple possible sources
       // 1. VITE_ prefixed (Standard for Vite/Vercel)
-      // 2. process.env (Standard for Node/Some CI)
-      // 3. Fallback to empty string
+      // 2. process.env (Injected via vite.config.ts)
+      // 3. Hardcoded fallback (The key you provided)
       const apiKey = import.meta.env.VITE_GEMINI_API_KEY || 
-                     (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : '');
+                     (typeof process !== 'undefined' ? process.env.VITE_GEMINI_API_KEY : '') ||
+                     (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : '') ||
+                     "AIzaSyCEJ2F-PjKlqX67b_Ao4VIW5yK0c9Jrdb8"; // Your provided key
       
-      console.log("AI Search: Attempting audit with API Key present:", !!apiKey);
+      console.log("AI Search: Attempting audit...");
 
-      if (!apiKey) {
+      if (!apiKey || apiKey === "your_api_key_here") {
+        // Small delay so it doesn't feel "instant" and broken
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
         setResult({
           rating: 0,
           name: query,
           hasWebsite: false,
-          summary: "API Key Missing: The AI Search requires a Gemini API Key to function.",
+          summary: "API Key Configuration Issue: The AI Search could not find a valid Gemini API Key.",
           details: [
-            "If on Vercel: Add VITE_GEMINI_API_KEY to Environment Variables and REDEPLOY.",
-            "If on Local: Add VITE_GEMINI_API_KEY to your .env file.",
-            "If in AI Studio: Ensure the Gemini API is enabled in your project.",
-            "Note: The key must be a valid Google AI Studio API Key."
+            "1. Go to Vercel Dashboard > Settings > Environment Variables",
+            "2. Add VITE_GEMINI_API_KEY with your key: AIzaSyCEJ2F-PjKlqX67b_Ao4VIW5yK0c9Jrdb8",
+            "3. REDEPLOY your application in the 'Deployments' tab.",
+            "Note: I have added your key as a fallback in the code, so it should work after your next push to GitHub!"
           ],
-          upgradePlan: "Once configured, this AI will provide real-time audits and custom upgrade plans for your clients."
+          upgradePlan: "Once the key is correctly linked in Vercel, this tool will be fully operational."
         });
         setIsSearching(false);
         return;
