@@ -36,14 +36,16 @@ async function startServer() {
     }
 
     const apiKey = process.env.OPENROUTER_API_KEY?.trim() || "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";
+    const referer = req.headers.referer || "https://thesorenstudio.in";
 
     try {
-      console.log(`Starting audit for: ${query}`);
+      console.log(`[Audit] Starting for: ${query} (Referer: ${referer})`);
+      
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${apiKey}`,
-          "HTTP-Referer": "https://thesorenstudio.in",
+          "HTTP-Referer": referer,
           "X-Title": "The Søren Studio Audit",
           "Content-Type": "application/json"
         },
@@ -78,17 +80,20 @@ async function startServer() {
       let auditResult;
 
       if (!response.ok) {
-        console.error("OpenRouter API Error:", response.status);
+        const errorText = await response.text();
+        console.error(`[Audit] OpenRouter API Error (${response.status}):`, errorText);
         // Fallback to database if AI fails
         auditResult = getFallbackAudit(query);
       } else {
         const data = await response.json();
         
         if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+          console.error("[Audit] AI engine returned an empty response");
           auditResult = getFallbackAudit(query);
         } else {
           try {
             let content = data.choices[0].message.content.trim();
+            console.log("[Audit] AI Raw Content Received");
             
             // Fix for markdown JSON wrapping
             if (content.startsWith("```")) {
@@ -96,13 +101,14 @@ async function startServer() {
             }
             
             auditResult = JSON.parse(content);
+            console.log("[Audit] AI Content Parsed Successfully");
             
             // Validation & Defaulting
             if (!auditResult.details || !Array.isArray(auditResult.details)) {
               auditResult.details = getFallbackAudit(query).details;
             }
           } catch (parseError) {
-            console.error("JSON Parse Error, falling back to database:", parseError);
+            console.error("[Audit] JSON Parse Error, falling back to database:", parseError);
             auditResult = getFallbackAudit(query);
           }
         }
@@ -115,7 +121,7 @@ async function startServer() {
       });
 
     } catch (error) {
-      console.error("Audit Error, falling back to database:", error);
+      console.error("[Audit] Unexpected Error, falling back to database:", error);
       res.json({
         success: true,
         data: getFallbackAudit(query),
