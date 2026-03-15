@@ -122,8 +122,12 @@ const translations = {
         name: "Enterprise",
         desc: "Includes everything in Brand plus:",
         benefit: "A complete hands-off digital department, allowing you to focus purely on operations while we handle all growth.",
-        features: ["On-site business visit", "Professional content creation", "Custom website design", "Full digital presence management", "Marketing consultation"]
+        features: ["AI Voice Assistant Integration", "On-site business visit", "Professional content creation", "Custom website design", "Full digital presence management", "Marketing consultation"]
       }
+    },
+    usp: {
+      title: "Our Enterprise USP",
+      subtitle: "Exclusive features for large-scale growth"
     },
     interactiveDemo: {
       title: "See What We Build",
@@ -270,8 +274,12 @@ const translations = {
         name: "Enterprise",
         desc: "Brand में सब कुछ शामिल है प्लस:",
         benefit: "एक पूर्ण डिजिटल विभाग, जो आपको पूरी तरह से संचालन पर ध्यान केंद्रित करने की अनुमति देता है जबकि हम सभी विकास को संभालते हैं।",
-        features: ["On-site business विज़िट", "Professional कंटेंट निर्माण", "Custom website डिज़ाइन", "Full digital उपस्थिति मैनेजमेंट", "Marketing कंसल्टेशन"]
+        features: ["AI वॉयस असिस्टेंट इंटीग्रेशन", "On-site business विज़िट", "Professional कंटेंट निर्माण", "Custom website डिज़ाइन", "Full digital उपस्थिति मैनेजमेंट", "Marketing कंसल्टेशन"]
       }
+    },
+    usp: {
+      title: "हमारा Enterprise USP",
+      subtitle: "बड़े पैमाने पर विकास के लिए विशेष सुविधाएँ"
     },
     interactiveDemo: {
       title: "देखें कि हम क्या बनाते हैं",
@@ -635,12 +643,12 @@ function AiSearch({ lang }: { lang: Language }) {
     setSearchProgress(0);
     
     const engines = [
-      { msg: "Connecting to Local Business Database...", progress: 10 },
-      { msg: "Scanning Gujarat business infrastructure...", progress: 25 },
-      { msg: "Ahmedabad directory search done. Auditing presence...", progress: 45 },
-      { msg: "Local audit done. Checking social media accounts...", progress: 65 },
-      { msg: "Verification search done. Analyzing local directories...", progress: 85 },
-      { msg: "Finalizing Visibility Score and Søren Studio Upgrade Plan...", progress: 95 }
+      { msg: "Connecting to Global SEO Index...", progress: 10 },
+      { msg: "Scanning Google Search results...", progress: 25 },
+      { msg: "Analyzing local directory citations...", progress: 45 },
+      { msg: "Evaluating Social Media presence...", progress: 65 },
+      { msg: "Running AI Empathic Audit...", progress: 85 },
+      { msg: "Finalizing report...", progress: 95 }
     ];
 
     let step = 0;
@@ -650,57 +658,49 @@ function AiSearch({ lang }: { lang: Language }) {
         setSearchProgress(engines[step].progress);
         step++;
       }
-    }, 1500);
+    }, 1200);
 
     try {
-      // Local Database Search Logic
-      const normalizedQuery = query.toLowerCase().trim();
-      const foundBusiness = BUSINESS_DATABASE.find(b => 
-        b.name.toLowerCase().includes(normalizedQuery) || 
-        normalizedQuery.includes(b.name.toLowerCase())
-      );
+      const response = await fetch("/api/audit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query })
+      });
 
-      // Simulate network delay for "diagnostic" feel
-      await new Promise(resolve => setTimeout(resolve, 9000));
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to connect to audit server");
+      }
 
-      if (foundBusiness) {
-        const rating = Math.floor(Math.random() * (99 - 85 + 1)) + 85;
-        setResult({
-          rating,
-          name: foundBusiness.name,
-          hasWebsite: true,
-          summary: `Excellent digital presence found in the ${foundBusiness.sector} sector in ${foundBusiness.location}.`,
-          details: [
-            `Official website (${foundBusiness.website}) is active and indexed.`,
-            `Strong visibility in ${foundBusiness.location} local search results.`,
-            `Google Business Profile is verified and optimized for ${foundBusiness.sector}.`,
-            "Social media handles are linked and show consistent activity.",
-            "High domain authority compared to local competitors."
-          ],
-          upgradePlan: `For ${foundBusiness.name}, The Søren Studio will upgrade your current infrastructure to a high-converting Interactive Engine. We will automate your lead capture and implement advanced SEO to dominate the ${foundBusiness.sector} market in Gujarat, potentially increasing your ROI by 45%.`
-        });
-      } else {
-        const rating = Math.floor(Math.random() * (25 - 10 + 1)) + 10;
-        setResult({
-          rating,
-          name: query,
-          hasWebsite: false,
-          summary: "Critical Visibility Alert: No official website or verified digital presence found for this business.",
-          details: [
-            "No official domain found matching this business name.",
-            "Google Maps presence is either missing or unverified.",
-            "Social media accounts are inactive or non-existent.",
-            "Business is losing approximately 15-20 potential leads daily to competitors.",
-            "Zero local directory citations found in Gujarat region."
-          ],
-          upgradePlan: `The Søren Studio will build your digital identity from scratch. We will launch a premium website, set up and automate your Google Business Profile, and create a social media growth engine. This will put you ahead of 90% of local competitors in Ahmedabad.`
-        });
+      const resultData = await response.json();
+      
+      if (!resultData.success) {
+        throw new Error(resultData.error || "AI Audit failed to generate valid data");
       }
       
+      // Ensure we show the progress for a bit even if AI is fast
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      setResult(resultData.data);
       setSearchProgress(100);
       setIsSearching(false);
     } catch (error: any) {
       console.error("Search failed:", error);
+      // Fallback to a mock result if API fails
+      setResult({
+        rating: 15,
+        name: query,
+        hasWebsite: false,
+        summary: `Audit Error: ${error.message}`,
+        details: [
+          "The AI engine encountered an issue processing this request.",
+          "This could be due to high traffic or an invalid business name.",
+          "Please try again with a more specific business name.",
+          "Check your internet connection and try refreshing.",
+          "Contact support if this issue persists."
+        ],
+        upgradePlan: "Our manual audit team is available to help you if the AI search continues to fail."
+      });
       setIsSearching(false);
     } finally {
       clearInterval(interval);
@@ -853,7 +853,7 @@ function AiSearch({ lang }: { lang: Language }) {
                   <span className="text-[10px] font-black uppercase tracking-[0.2em]">AI Summary</span>
                 </div>
                 <p className="text-lg text-white/90 leading-relaxed font-serif italic">
-                  "{result.summary}"
+                  "{result?.summary}"
                 </p>
               </div>
               
@@ -861,7 +861,7 @@ function AiSearch({ lang }: { lang: Language }) {
                 <div>
                   <div className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-4">{t.auditDetails}</div>
                   <ul className="space-y-3">
-                    {result.details.map((detail, i) => (
+                    {result?.details?.map((detail, i) => (
                       <motion.li 
                         initial={{ opacity: 0, x: 10 }}
                         animate={{ opacity: 1, x: 0 }}
@@ -895,7 +895,7 @@ function AiSearch({ lang }: { lang: Language }) {
                 <span className="text-xs font-black uppercase tracking-[0.2em]">The Søren Studio Upgrade Plan</span>
               </div>
               <p className="text-white/80 leading-relaxed text-sm md:text-base">
-                {result.upgradePlan}
+                {result?.upgradePlan}
               </p>
               <div className="mt-6 flex justify-end">
                 <a 
@@ -1386,6 +1386,96 @@ function DemoSite({ lang, likedDemo, setLikedDemo }: { lang: Language, likedDemo
             </button>
           </div>
         )}
+      </div>
+    </section>
+  );
+}
+
+function EnterpriseUSP({ lang }: { lang: Language }) {
+  const t = translations[lang].usp;
+  return (
+    <section className="py-24 bg-zinc-950 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row items-center gap-16">
+          <div className="flex-1">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <p className="text-tmo-gold font-bold uppercase tracking-[0.3em] text-xs mb-4">{t.subtitle}</p>
+              <h2 className="text-4xl md:text-6xl font-serif font-bold mb-8 leading-tight">
+                {t.title}
+              </h2>
+              <div className="space-y-8">
+                <div className="flex gap-6">
+                  <div className="w-12 h-12 bg-tmo-gold/10 rounded-2xl flex items-center justify-center shrink-0 border border-tmo-gold/20">
+                    <Zap className="w-6 h-6 text-tmo-gold" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">{lang === 'hi' ? "AI संचालित ऑडिट" : "AI-Powered Audit"}</h3>
+                    <p className="text-white/60 leading-relaxed">
+                      {lang === 'hi' ? "हमारा उन्नत AI आपके डिजिटल पदचिह्न का विश्लेषण करता है और तत्काल सुधार योजना प्रदान करता है।" : "Our advanced AI analyzes your digital footprint and provides an instant improvement plan."}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-6">
+                  <div className="w-12 h-12 bg-tmo-gold/10 rounded-2xl flex items-center justify-center shrink-0 border border-tmo-gold/20">
+                    <TrendingUp className="w-6 h-6 text-tmo-gold" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">{lang === 'hi' ? "कस्टम कनवर्जन इंजन" : "Custom Conversion Engine"}</h3>
+                    <p className="text-white/60 leading-relaxed">
+                      {lang === 'hi' ? "हम आपके बिजनेस के लिए विशिष्ट AI मॉडल बनाते हैं जो ग्राहकों के व्यवहार का विश्लेषण करते हैं।" : "We build custom AI models specific to your business that analyze customer behavior."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+          <div className="flex-1 relative">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative z-10 bg-tmo-black border border-white/10 p-8 rounded-[3rem] shadow-2xl"
+            >
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-3 h-3 rounded-full bg-red-500" />
+                <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                <div className="w-3 h-3 rounded-full bg-green-500" />
+                <div className="ml-auto text-[10px] text-white/30 font-mono tracking-widest uppercase">AI Voice Terminal</div>
+              </div>
+              <div className="space-y-4 font-mono text-sm">
+                <p className="text-tmo-gold">{"// Initializing Empathic Engine..."}</p>
+                <p className="text-white/40">{"[SYSTEM] Detecting user emotion: 'Frustrated'"}</p>
+                <p className="text-green-400">{"[AI] Adjusting tone to: 'Calm & Reassuring'"}</p>
+                <p className="text-white/80">{"\"I understand this is frustrating. Let me help you resolve this immediately.\""}</p>
+                <div className="pt-8 flex justify-center">
+                  <div className="flex gap-1 h-12 items-center">
+                    {[...Array(12)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        animate={{
+                          height: [10, 40, 15, 30, 10],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          delay: i * 0.1,
+                        }}
+                        className="w-1.5 bg-tmo-gold rounded-full opacity-50"
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+            {/* Decorative elements */}
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-tmo-gold/10 rounded-full blur-[100px]" />
+            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-tmo-gold/5 rounded-full blur-[100px]" />
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -2130,6 +2220,7 @@ export default function App() {
         return (
           <>
             <Services lang={lang} onAddToCart={(item) => addToCart(item, 'pricing')} />
+            <EnterpriseUSP lang={lang} />
             <WebsiteTypes lang={lang} />
             <AddOns lang={lang} onSelectAddOn={handleSelectAddOn} />
             <Pricing lang={lang} onSelectPlan={handleSelectPlan} />
