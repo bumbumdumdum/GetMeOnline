@@ -661,6 +661,7 @@ function AiSearch({ lang }: { lang: Language }) {
     }, 1200);
 
     try {
+      console.log("Starting audit for query:", query);
       const response = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -668,11 +669,27 @@ function AiSearch({ lang }: { lang: Language }) {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to connect to audit server");
+        let errorMessage = `Server error (${response.status})`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch (e) {
+          try {
+            const text = await response.text();
+            errorMessage = text.substring(0, 100) || errorMessage;
+          } catch (e2) {
+            // ignore
+          }
+        }
+        throw new Error(errorMessage);
       }
 
-      const resultData = await response.json();
+      let resultData;
+      try {
+        resultData = await response.json();
+      } catch (e) {
+        throw new Error("Invalid response from server");
+      }
       
       if (!resultData.success) {
         throw new Error(resultData.error || "AI Audit failed to generate valid data");
