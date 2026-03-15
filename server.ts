@@ -26,14 +26,23 @@ async function startServer() {
       });
     }
 
-    const apiKey = process.env.OPENROUTER_API_KEY || "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";
+    const apiKey = process.env.OPENROUTER_API_KEY;
+
+    if (!apiKey) {
+      console.error("OPENROUTER_API_KEY is not configured");
+      return res.status(500).json({ 
+        success: false, 
+        data: null, 
+        error: "Audit engine is not configured. Please set OPENROUTER_API_KEY." 
+      });
+    }
 
     try {
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${apiKey}`,
-          "HTTP-Referer": "https://thesorenstudio.com",
+          "HTTP-Referer": "https://thesorenstudio.in",
           "X-Title": "The Søren Studio Audit",
           "Content-Type": "application/json"
         },
