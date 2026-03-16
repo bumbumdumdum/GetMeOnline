@@ -14,7 +14,6 @@ import {
 import { cn } from "./lib/utils";
 import React, { useState, useEffect } from "react";
 import { BUSINESS_DATABASE } from "./data/businesses";
-import { GoogleGenAI, Type } from "@google/genai";
 
 const LOGO_URL = "https://raw.githubusercontent.com/XzeBitOP/SorenAssets/0385f974fa45012b25cdb9e9ab825d3dd10a7065/Website%20images/6D2E38AE-E45F-4861-96EB-B2FC8B03F4A2.png";
 const VIDEO_URL = "https://raw.githubusercontent.com/bumbumdumdum/Website-media/228b75dc532ce4847376361eb60e702adf384cf7/gemini_generated_video_8CF985E8.mov";
@@ -671,8 +670,10 @@ function AiSearch({ lang }: { lang: Language }) {
       );
 
       if (dbMatch) {
+        // Rating from 85 to 100
+        const rating = Math.floor(Math.random() * (100 - 85 + 1)) + 85;
         return {
-          rating: 88,
+          rating,
           name: dbMatch.name,
           hasWebsite: true,
           summary: `${dbMatch.name} is a verified business in our database. Their digital presence in the ${dbMatch.sector} sector is strong but has room for premium optimization.`,
@@ -687,8 +688,10 @@ function AiSearch({ lang }: { lang: Language }) {
         };
       }
 
+      // Rating from 1 to 20
+      const rating = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
       return {
-        rating: 38,
+        rating,
         name: name || "Business",
         hasWebsite: false,
         summary: `Digital presence audit for ${name || "this business"} reveals significant growth opportunities. Our database indicates a limited online footprint.`,
@@ -704,65 +707,12 @@ function AiSearch({ lang }: { lang: Language }) {
     };
 
     try {
-      console.log("Starting Gemini audit for query:", query);
+      console.log("Starting database audit for query:", query);
       
-      // Try both standard Vite and process.env (mapped in vite.config.ts)
-      const apiKey = (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || "").trim();
+      // Simulate search delay
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
-      if (!apiKey) {
-        console.warn("GEMINI_API_KEY is missing. Silently switching to database fallback.");
-        
-        // Silent fallback to database
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        setResult(getFallbackAudit(query));
-        setSearchProgress(100);
-        setIsSearching(false);
-        clearInterval(interval);
-        return;
-      }
-
-      const genAI = new GoogleGenAI({ apiKey });
-      const response = await genAI.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [{ parts: [{ text: `Audit this business: "${query}"` }] }],
-        config: {
-          systemInstruction: `You are a professional digital presence auditor for "The Søren Studio". 
-          Your task is to audit a business's online presence based on its name.
-          
-          You must return a JSON object with the following structure:
-          {
-            "rating": number (0-100),
-            "name": string,
-            "hasWebsite": boolean,
-            "summary": string,
-            "details": string[] (exactly 5 points),
-            "upgradePlan": string
-          }
-          
-          Return ONLY the JSON object. Do not include markdown formatting or any other text.`,
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              rating: { type: Type.NUMBER },
-              name: { type: Type.STRING },
-              hasWebsite: { type: Type.BOOLEAN },
-              summary: { type: Type.STRING },
-              details: { type: Type.ARRAY, items: { type: Type.STRING } },
-              upgradePlan: { type: Type.STRING }
-            },
-            required: ["rating", "name", "hasWebsite", "summary", "details", "upgradePlan"]
-          }
-        }
-      });
-
-      const content = response.text;
-      const resultData = JSON.parse(content || "{}");
-      
-      // Ensure we show the progress for a bit even if AI is fast
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      setResult(resultData);
+      setResult(getFallbackAudit(query));
       setSearchProgress(100);
       setIsSearching(false);
     } catch (error: any) {
