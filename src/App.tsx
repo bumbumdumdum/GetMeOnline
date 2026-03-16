@@ -682,10 +682,18 @@ function AiSearch({ lang }: { lang: Language }) {
     try {
       console.log("Starting Gemini audit for query:", query);
       
-      const apiKey = process.env.GEMINI_API_KEY;
+      // Try both standard Vite and process.env (mapped in vite.config.ts)
+      const apiKey = (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || "").trim();
+      
       if (!apiKey) {
-        console.warn("GEMINI_API_KEY not found, using fallback database.");
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        console.error("CRITICAL: GEMINI_API_KEY is empty or undefined.");
+        console.log("Environment check:", { 
+          hasVitePrefix: !!import.meta.env.VITE_GEMINI_API_KEY, 
+          hasProcessEnv: !!process.env.GEMINI_API_KEY 
+        });
+        
+        // Fallback to database
+        await new Promise(resolve => setTimeout(resolve, 2000));
         setResult(getFallbackAudit(query));
         setSearchProgress(100);
         setIsSearching(false);
@@ -695,7 +703,7 @@ function AiSearch({ lang }: { lang: Language }) {
 
       const genAI = new GoogleGenAI({ apiKey });
       const response = await genAI.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-1.5-flash", // Using the most stable model name
         contents: [{ parts: [{ text: `Audit this business: "${query}"` }] }],
         config: {
           systemInstruction: `You are a professional digital presence auditor for "The Søren Studio". 
