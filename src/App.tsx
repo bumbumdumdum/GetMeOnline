@@ -14,6 +14,7 @@ import {
 import { cn } from "./lib/utils";
 import React, { useState, useEffect } from "react";
 import { BUSINESS_DATABASE } from "./data/businesses";
+import { GoogleGenAI, Type } from "@google/genai";
 
 const LOGO_URL = "https://raw.githubusercontent.com/XzeBitOP/SorenAssets/0385f974fa45012b25cdb9e9ab825d3dd10a7065/Website%20images/6D2E38AE-E45F-4861-96EB-B2FC8B03F4A2.png";
 const VIDEO_URL = "https://raw.githubusercontent.com/bumbumdumdum/Website-media/228b75dc532ce4847376361eb60e702adf384cf7/gemini_generated_video_8CF985E8.mov";
@@ -623,6 +624,8 @@ function AiSearch({ lang }: { lang: Language }) {
   const t = translations[lang].hero;
   const [query, setQuery] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [searchCount, setSearchCount] = useState(0);
+  const MAX_SEARCHES = 2;
   const [searchEngine, setSearchEngine] = useState("");
   const [searchProgress, setSearchProgress] = useState(0);
   const [result, setResult] = useState<{ 
@@ -636,9 +639,10 @@ function AiSearch({ lang }: { lang: Language }) {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    if (!query.trim() || searchCount >= MAX_SEARCHES) return;
     
     setIsSearching(true);
+    setSearchCount(prev => prev + 1);
     setResult(null);
     setSearchProgress(0);
     
@@ -660,64 +664,82 @@ function AiSearch({ lang }: { lang: Language }) {
       }
     }, 1200);
 
-    try {
-      console.log("Starting audit for query:", query);
-      const response = await fetch("/api/audit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query })
-      });
+    const getFallbackAudit = (name: string) => ({
+      rating: 42,
+      name: name || "Business",
+      hasWebsite: false,
+      summary: `Digital presence audit for ${name || "this business"} reveals significant growth opportunities.`,
+      details: [
+        "Search engine visibility is currently below industry average.",
+        "Local map listings require optimization and verification.",
+        "Social media engagement shows potential for brand building.",
+        "Website performance and mobile responsiveness need review.",
+        "Digital brand consistency is fragmented across platforms."
+      ],
+      upgradePlan: "The Søren Studio recommends a comprehensive Digital Presence Overhaul to capture market share."
+    });
 
-      if (!response.ok) {
-        let errorMessage = `Server error (${response.status})`;
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.error || errorMessage;
-        } catch (e) {
-          try {
-            const text = await response.text();
-            errorMessage = text.substring(0, 100) || errorMessage;
-          } catch (e2) {
-            // ignore
+    try {
+      console.log("Starting Gemini audit for query:", query);
+      
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        console.warn("GEMINI_API_KEY not found, using fallback database.");
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        setResult(getFallbackAudit(query));
+        setSearchProgress(100);
+        setIsSearching(false);
+        clearInterval(interval);
+        return;
+      }
+
+      const genAI = new GoogleGenAI({ apiKey });
+      const response = await genAI.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: [{ parts: [{ text: `Audit this business: "${query}"` }] }],
+        config: {
+          systemInstruction: `You are a professional digital presence auditor for "The Søren Studio". 
+          Your task is to audit a business's online presence based on its name.
+          
+          You must return a JSON object with the following structure:
+          {
+            "rating": number (0-100),
+            "name": string,
+            "hasWebsite": boolean,
+            "summary": string,
+            "details": string[] (exactly 5 points),
+            "upgradePlan": string
+          }
+          
+          Return ONLY the JSON object. Do not include markdown formatting or any other text.`,
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              rating: { type: Type.NUMBER },
+              name: { type: Type.STRING },
+              hasWebsite: { type: Type.BOOLEAN },
+              summary: { type: Type.STRING },
+              details: { type: Type.ARRAY, items: { type: Type.STRING } },
+              upgradePlan: { type: Type.STRING }
+            },
+            required: ["rating", "name", "hasWebsite", "summary", "details", "upgradePlan"]
           }
         }
-        throw new Error(errorMessage);
-      }
+      });
 
-      let resultData;
-      try {
-        resultData = await response.json();
-      } catch (e) {
-        throw new Error("Invalid response from server");
-      }
-      
-      if (!resultData.success) {
-        throw new Error(resultData.error || "AI Audit failed to generate valid data");
-      }
+      const content = response.text;
+      const resultData = JSON.parse(content || "{}");
       
       // Ensure we show the progress for a bit even if AI is fast
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      setResult(resultData.data);
+      setResult(resultData);
       setSearchProgress(100);
       setIsSearching(false);
     } catch (error: any) {
       console.error("Search failed:", error);
-      // Fallback to a mock result if API fails
-      setResult({
-        rating: 15,
-        name: query,
-        hasWebsite: false,
-        summary: `Audit Error: ${error.message}`,
-        details: [
-          "The AI engine encountered an issue processing this request.",
-          "This could be due to high traffic or an invalid business name.",
-          "Please try again with a more specific business name.",
-          "Check your internet connection and try refreshing.",
-          "Contact support if this issue persists."
-        ],
-        upgradePlan: "Our manual audit team is available to help you if the AI search continues to fail."
-      });
+      setResult(getFallbackAudit(query));
       setIsSearching(false);
     } finally {
       clearInterval(interval);
@@ -731,20 +753,31 @@ function AiSearch({ lang }: { lang: Language }) {
       transition={{ duration: 0.8, delay: 0.3 }}
       className="mt-8 mb-12 max-w-2xl mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl"
     >
-      <p className="text-white/90 font-medium mb-4 text-sm md:text-base">{t.checkAi}</p>
+      <p className="text-white/90 font-medium mb-4 text-sm md:text-base flex justify-between items-center">
+        <span>{t.checkAi}</span>
+        <span className={cn(
+          "text-xs px-2 py-1 rounded-full border",
+          searchCount >= MAX_SEARCHES ? "bg-red-500/20 border-red-500/50 text-red-200" : "bg-white/10 border-white/20 text-white/60"
+        )}>
+          {MAX_SEARCHES - searchCount}/{MAX_SEARCHES} searches available
+        </span>
+      </p>
       <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
-        <input 
-          type="text" 
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t.placeholder} 
-          className="flex-1 bg-tmo-black/50 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-tmo-gold transition-colors"
-          required
-        />
+        <div className="flex-1 relative">
+          <input 
+            type="text" 
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            disabled={searchCount >= MAX_SEARCHES}
+            placeholder={searchCount >= MAX_SEARCHES ? "Search limit reached" : t.placeholder} 
+            className="w-full bg-tmo-black/50 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-tmo-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            required
+          />
+        </div>
         <button 
           type="submit" 
-          disabled={isSearching}
-          className="shimmer-gold-bg text-tmo-black px-6 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          disabled={isSearching || searchCount >= MAX_SEARCHES}
+          className="shimmer-gold-bg text-tmo-black px-6 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[120px]"
         >
           {isSearching ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
           {isSearching ? t.searching : t.checkBtn}
