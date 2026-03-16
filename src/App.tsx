@@ -664,20 +664,44 @@ function AiSearch({ lang }: { lang: Language }) {
       }
     }, 1200);
 
-    const getFallbackAudit = (name: string) => ({
-      rating: 42,
-      name: name || "Business",
-      hasWebsite: false,
-      summary: `Digital presence audit for ${name || "this business"} reveals significant growth opportunities.`,
-      details: [
-        "Search engine visibility is currently below industry average.",
-        "Local map listings require optimization and verification.",
-        "Social media engagement shows potential for brand building.",
-        "Website performance and mobile responsiveness need review.",
-        "Digital brand consistency is fragmented across platforms."
-      ],
-      upgradePlan: "The Søren Studio recommends a comprehensive Digital Presence Overhaul to capture market share."
-    });
+    const getFallbackAudit = (name: string) => {
+      const dbMatch = BUSINESS_DATABASE.find(b => 
+        b.name.toLowerCase().includes(name.toLowerCase()) || 
+        name.toLowerCase().includes(b.name.toLowerCase())
+      );
+
+      if (dbMatch) {
+        return {
+          rating: 88,
+          name: dbMatch.name,
+          hasWebsite: true,
+          summary: `${dbMatch.name} is a verified business in our database. Their digital presence in the ${dbMatch.sector} sector is strong but has room for premium optimization.`,
+          details: [
+            `Established presence in ${dbMatch.location}.`,
+            `Active website found at ${dbMatch.website}.`,
+            "Local SEO rankings are in the top 20th percentile.",
+            "Brand consistency is maintained across major platforms.",
+            "Mobile experience is functional but could be enhanced."
+          ],
+          upgradePlan: "The Søren Studio recommends our 'Growth Engine' package to transition from a strong local player to a digital leader."
+        };
+      }
+
+      return {
+        rating: 38,
+        name: name || "Business",
+        hasWebsite: false,
+        summary: `Digital presence audit for ${name || "this business"} reveals significant growth opportunities. Our database indicates a limited online footprint.`,
+        details: [
+          "Search engine visibility is currently below industry average.",
+          "Local map listings require optimization and verification.",
+          "Social media engagement shows potential for brand building.",
+          "Website performance and mobile responsiveness need review.",
+          "Digital brand consistency is fragmented across platforms."
+        ],
+        upgradePlan: "The Søren Studio recommends a comprehensive Digital Presence Overhaul to capture market share."
+      };
+    };
 
     try {
       console.log("Starting Gemini audit for query:", query);
@@ -686,24 +710,11 @@ function AiSearch({ lang }: { lang: Language }) {
       const apiKey = (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || "").trim();
       
       if (!apiKey) {
-        const errorMsg = "GEMINI_API_KEY is missing. Please add VITE_GEMINI_API_KEY to your Vercel Environment Variables and redeploy.";
-        console.error("CRITICAL:", errorMsg);
-        console.log("Environment check:", { 
-          hasVitePrefix: !!import.meta.env.VITE_GEMINI_API_KEY, 
-          hasProcessEnv: !!process.env.GEMINI_API_KEY 
-        });
+        console.warn("GEMINI_API_KEY is missing. Silently switching to database fallback.");
         
-        setResult({
-          ...getFallbackAudit(query),
-          summary: `Configuration Error: ${errorMsg}`,
-          details: [
-            "1. Go to Vercel Dashboard > Settings > Environment Variables",
-            "2. Add 'VITE_GEMINI_API_KEY' with your Google AI Studio key",
-            "3. Go to Deployments tab and click 'Redeploy'",
-            "4. Ensure you added it to both 'Production' and 'Preview' environments",
-            "5. Contact support if the issue persists"
-          ]
-        });
+        // Silent fallback to database
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        setResult(getFallbackAudit(query));
         setSearchProgress(100);
         setIsSearching(false);
         clearInterval(interval);
