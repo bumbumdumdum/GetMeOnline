@@ -686,15 +686,24 @@ function AiSearch({ lang }: { lang: Language }) {
       const apiKey = (import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY || "").trim();
       
       if (!apiKey) {
-        console.error("CRITICAL: GEMINI_API_KEY is empty or undefined.");
+        const errorMsg = "GEMINI_API_KEY is missing. Please add VITE_GEMINI_API_KEY to your Vercel Environment Variables and redeploy.";
+        console.error("CRITICAL:", errorMsg);
         console.log("Environment check:", { 
           hasVitePrefix: !!import.meta.env.VITE_GEMINI_API_KEY, 
           hasProcessEnv: !!process.env.GEMINI_API_KEY 
         });
         
-        // Fallback to database
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        setResult(getFallbackAudit(query));
+        setResult({
+          ...getFallbackAudit(query),
+          summary: `Configuration Error: ${errorMsg}`,
+          details: [
+            "1. Go to Vercel Dashboard > Settings > Environment Variables",
+            "2. Add 'VITE_GEMINI_API_KEY' with your Google AI Studio key",
+            "3. Go to Deployments tab and click 'Redeploy'",
+            "4. Ensure you added it to both 'Production' and 'Preview' environments",
+            "5. Contact support if the issue persists"
+          ]
+        });
         setSearchProgress(100);
         setIsSearching(false);
         clearInterval(interval);
@@ -703,7 +712,7 @@ function AiSearch({ lang }: { lang: Language }) {
 
       const genAI = new GoogleGenAI({ apiKey });
       const response = await genAI.models.generateContent({
-        model: "gemini-1.5-flash", // Using the most stable model name
+        model: "gemini-3-flash-preview",
         contents: [{ parts: [{ text: `Audit this business: "${query}"` }] }],
         config: {
           systemInstruction: `You are a professional digital presence auditor for "The Søren Studio". 
