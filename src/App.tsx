@@ -97,32 +97,42 @@ const translations = {
       starter: {
         name: "Starter",
         desc: "Best for small businesses starting their online presence.",
-        benefit: "Establishes your professional online identity so customers can find and trust you.",
-        features: ["1 Static Website", "Mobile optimized", "Hosting included", "Contact form", "WhatsApp button", "Google Maps location"]
+        benefit: "Establishes professional trust. Customers stop losing faith in your brand because you lack a digital presence.",
+        features: ["1 Static Website", "Mobile optimized", "Hosting included", "Contact form", "WhatsApp button", "Google Maps location"],
+        originalPrice: "₹7,000",
+        price: "₹5,000"
       },
       growth: {
         name: "Growth",
         desc: "Includes everything in Starter plus:",
-        benefit: "Automates inquiries and captures leads, saving you time while growing your customer base.",
-        features: ["Interactive website features", "Up to 2 websites", "Monthly website updates", "Google Business profile setup", "WhatsApp inquiry automation"]
+        benefit: "Starts driving inquiries. You go from being invisible to being found by local customers actively searching for you.",
+        features: ["Interactive website features", "Up to 2 websites", "Monthly website updates", "Google Business profile setup", "WhatsApp inquiry automation"],
+        originalPrice: "₹20,000",
+        price: "₹15,000"
       },
       business: {
         name: "Business",
         desc: "Includes everything in Growth plus:",
-        benefit: "Dominates local search and social media, turning your online presence into a consistent revenue stream.",
-        features: ["Unlimited website updates", "Instagram page setup", "4 Instagram posts per month", "Basic SEO setup", "Priority support"]
+        benefit: "Dominates local market. Your business becomes the first choice on Google and Social Media in your area.",
+        features: ["Unlimited website updates", "Instagram page setup", "4 Instagram posts per month", "Basic SEO setup", "Priority support"],
+        originalPrice: "₹60,000",
+        price: "₹45,000"
       },
       brand: {
         name: "Brand",
         desc: "Includes everything in Business plus:",
-        benefit: "Provides a fully automated booking and sales machine, scaling your business without extra manual work.",
-        features: ["Advanced interactive website", "Booking system", "Reservation system", "Enquiry forms", "12 Instagram posts per month", "Social media content design", "Social media posting"]
+        benefit: "Scales your revenue automatically. A 24/7 sales machine that books appointments and handles leads without your manual effort.",
+        features: ["Advanced interactive website", "Booking system", "Reservation system", "Enquiry forms", "12 Instagram posts per month", "Social media content design", "Social media posting"],
+        originalPrice: "₹1,50,000",
+        price: "₹1,20,000"
       },
       enterprise: {
         name: "Enterprise",
         desc: "Includes everything in Brand plus:",
-        benefit: "A complete hands-off digital department, allowing you to focus purely on operations while we handle all growth.",
-        features: ["AI Voice Assistant Integration", "On-site business visit", "Professional content creation", "Custom website design", "Full digital presence management", "Marketing consultation"]
+        benefit: "Total Market Authority. You focus 100% on operations while we act as your full-scale digital growth department.",
+        features: ["AI Voice Assistant Integration", "On-site business visit", "Professional content creation", "Custom website design", "Full digital presence management", "Marketing consultation"],
+        originalPrice: "₹5,00,000",
+        price: "₹3,00,000"
       }
     },
     usp: {
@@ -249,32 +259,42 @@ const translations = {
       starter: {
         name: "Starter",
         desc: "अपना Online अस्तित्व शुरू करने वाले छोटे Businesses के लिए सबसे अच्छा।",
-        benefit: "आपकी प्रोफेशनल Online पहचान बनाता है ताकि ग्राहक आपको ढूंढ सकें और आप पर भरोसा कर सकें।",
-        features: ["1 Static Website", "Mobile optimized", "Hosting शामिल है", "Contact form", "WhatsApp बटन", "Google Maps लोकेशन"]
+        benefit: "पेशेवर विश्वास स्थापित करता है। ग्राहक आपके ब्रांड पर विश्वास करना बंद नहीं करते क्योंकि आपके पास डिजिटल उपस्थिति नहीं है।",
+        features: ["1 Static Website", "Mobile optimized", "Hosting शामिल है", "Contact form", "WhatsApp बटन", "Google Maps लोकेशन"],
+        originalPrice: "₹7,000",
+        price: "₹5,000"
       },
       growth: {
         name: "Growth",
         desc: "Starter में सब कुछ शामिल है प्लस:",
-        benefit: "पूछताछ को ऑटोमेट करता है और Leads कैप्चर करता है, जिससे आपका समय बचता है और आपका ग्राहक आधार बढ़ता है।",
-        features: ["Interactive website फीचर्स", "2 Websites तक", "Monthly website अपडेट", "Google Business प्रोफाइल सेटअप", "WhatsApp पूछताछ ऑटोमेशन"]
+        benefit: "पूछताछ शुरू करता है। आप अदृश्य होने से उन स्थानीय ग्राहकों द्वारा खोजे जाने तक जाते हैं जो सक्रिय रूप से आपकी तलाश कर रहे हैं।",
+        features: ["Interactive website फीचर्स", "2 Websites तक", "Monthly website अपडेट", "Google Business प्रोफाइल सेटअप", "WhatsApp पूछताछ ऑटोमेशन"],
+        originalPrice: "₹20,000",
+        price: "₹15,000"
       },
       business: {
         name: "Business",
         desc: "Growth में सब कुछ शामिल है प्लस:",
-        benefit: "लोकल सर्च और सोशल मीडिया पर हावी होता है, जिससे आपकी Online उपस्थिति एक निरंतर आय स्रोत में बदल जाती है।",
-        features: ["Unlimited website अपडेट", "Instagram पेज सेटअप", "प्रति माह 4 Instagram पोस्ट", "Basic SEO सेटअप", "Priority सपोर्ट"]
+        benefit: "स्थानीय बाजार पर हावी होता है। आपका व्यवसाय आपके क्षेत्र में Google और सोशल मीडिया पर पहली पसंद बन जाता है।",
+        features: ["Unlimited website अपडेट", "Instagram पेज सेटअप", "प्रति माह 4 Instagram पोस्ट", "Basic SEO सेटअप", "Priority सपोर्ट"],
+        originalPrice: "₹60,000",
+        price: "₹45,000"
       },
       brand: {
         name: "Brand",
         desc: "Business में सब कुछ शामिल है प्लस:",
-        benefit: "एक पूरी तरह से ऑटोमेटेड बुकिंग और सेल्स मशीन प्रदान करता है, बिना अतिरिक्त मैन्युअल काम के आपके Business को बढ़ाता है।",
-        features: ["Advanced interactive website", "Booking सिस्टम", "Reservation सिस्टम", "Enquiry फॉर्म", "प्रति माह 12 Instagram पोस्ट", "Social media कंटेंट डिज़ाइन", "Social media पोस्टिंग"]
+        benefit: "आपके राजस्व को स्वचालित रूप से बढ़ाता है। एक 24/7 सेल्स मशीन जो आपके मैन्युअल प्रयास के बिना अपॉइंटमेंट बुक करती है और लीड्स संभालती है।",
+        features: ["Advanced interactive website", "Booking सिस्टम", "Reservation सिस्टम", "Enquiry फॉर्म", "प्रति माह 12 Instagram पोस्ट", "Social media कंटेंट डिज़ाइन", "Social media पोस्टिंग"],
+        originalPrice: "₹1,50,000",
+        price: "₹1,20,000"
       },
       enterprise: {
         name: "Enterprise",
         desc: "Brand में सब कुछ शामिल है प्लस:",
-        benefit: "एक पूर्ण डिजिटल विभाग, जो आपको पूरी तरह से संचालन पर ध्यान केंद्रित करने की अनुमति देता है जबकि हम सभी विकास को संभालते हैं।",
-        features: ["AI वॉयस असिस्टेंट इंटीग्रेशन", "On-site business विज़िट", "Professional कंटेंट निर्माण", "Custom website डिज़ाइन", "Full digital उपस्थिति मैनेजमेंट", "Marketing कंसल्टेशन"]
+        benefit: "कुल बाजार अधिकार। आप पूरी तरह से संचालन पर ध्यान केंद्रित करते हैं जबकि हम आपके पूर्ण-स्तरीय डिजिटल विकास विभाग के रूप में कार्य करते हैं।",
+        features: ["AI वॉयस असिस्टेंट इंटीग्रेशन", "On-site business विज़िट", "Professional कंटेंट निर्माण", "Custom website डिज़ाइन", "Full digital उपस्थिति मैनेजमेंट", "Marketing कंसल्टेशन"],
+        originalPrice: "₹5,00,000",
+        price: "₹3,00,000"
       }
     },
     usp: {
@@ -1441,9 +1461,9 @@ function EnterpriseUSP({ lang }: { lang: Language }) {
                     <Zap className="w-6 h-6 text-tmo-gold" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold mb-2">{lang === 'hi' ? "AI संचालित ऑडिट" : "AI-Powered Audit"}</h3>
+                    <h3 className="text-xl font-bold mb-2">{lang === 'hi' ? "डेटा-संचालित ऑडिट" : "Data-Driven Audit"}</h3>
                     <p className="text-white/60 leading-relaxed">
-                      {lang === 'hi' ? "हमारा उन्नत AI आपके डिजिटल पदचिह्न का विश्लेषण करता है और तत्काल सुधार योजना प्रदान करता है।" : "Our advanced AI analyzes your digital footprint and provides an instant improvement plan."}
+                      {lang === 'hi' ? "हमारा उन्नत सिस्टम आपके डिजिटल पदचिह्न का विश्लेषण करता है और तत्काल सुधार योजना प्रदान करता है।" : "Our advanced system analyzes your digital footprint and provides an instant improvement plan."}
                     </p>
                   </div>
                 </div>
@@ -1454,7 +1474,7 @@ function EnterpriseUSP({ lang }: { lang: Language }) {
                   <div>
                     <h3 className="text-xl font-bold mb-2">{lang === 'hi' ? "कस्टम कनवर्जन इंजन" : "Custom Conversion Engine"}</h3>
                     <p className="text-white/60 leading-relaxed">
-                      {lang === 'hi' ? "हम आपके बिजनेस के लिए विशिष्ट AI मॉडल बनाते हैं जो ग्राहकों के व्यवहार का विश्लेषण करते हैं।" : "We build custom AI models specific to your business that analyze customer behavior."}
+                      {lang === 'hi' ? "हम आपके बिजनेस के लिए विशिष्ट मॉडल बनाते हैं जो ग्राहकों के व्यवहार का विश्लेषण करते हैं।" : "We build custom models specific to your business that analyze customer behavior."}
                     </p>
                   </div>
                 </div>
@@ -1472,29 +1492,37 @@ function EnterpriseUSP({ lang }: { lang: Language }) {
                 <div className="w-3 h-3 rounded-full bg-red-500" />
                 <div className="w-3 h-3 rounded-full bg-yellow-500" />
                 <div className="w-3 h-3 rounded-full bg-green-500" />
-                <div className="ml-auto text-[10px] text-white/30 font-mono tracking-widest uppercase">AI Voice Terminal</div>
+                <div className="ml-auto text-[10px] text-white/30 font-mono tracking-widest uppercase">{lang === 'hi' ? "बिजनेस डैशबोर्ड" : "Business Dashboard"}</div>
               </div>
-              <div className="space-y-4 font-mono text-sm">
-                <p className="text-tmo-gold">{"// Initializing Empathic Engine..."}</p>
-                <p className="text-white/40">{"[SYSTEM] Detecting user emotion: 'Frustrated'"}</p>
-                <p className="text-green-400">{"[AI] Adjusting tone to: 'Calm & Reassuring'"}</p>
-                <p className="text-white/80">{"\"I understand this is frustrating. Let me help you resolve this immediately.\""}</p>
-                <div className="pt-8 flex justify-center">
-                  <div className="flex gap-1 h-12 items-center">
-                    {[...Array(12)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        animate={{
-                          height: [10, 40, 15, 30, 10],
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          delay: i * 0.1,
-                        }}
-                        className="w-1.5 bg-tmo-gold rounded-full opacity-50"
-                      />
-                    ))}
+              <div className="space-y-6">
+                <div className="flex justify-between items-end">
+                  <div>
+                    <p className="text-white/40 text-[10px] uppercase tracking-wider mb-1">{lang === 'hi' ? "कुल विज़िटर्स" : "Total Visitors"}</p>
+                    <p className="text-2xl font-bold text-white">12,482</p>
+                  </div>
+                  <div className="text-green-400 text-xs font-bold flex items-center gap-1">
+                    <TrendingUp className="w-3 h-3" /> +24%
+                  </div>
+                </div>
+                <div className="h-32 flex items-end gap-2">
+                  {[...Array(12)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ height: 0 }}
+                      whileInView={{ height: `${20 + Math.random() * 80}%` }}
+                      transition={{ duration: 1, delay: i * 0.05 }}
+                      className="flex-1 bg-tmo-gold/20 rounded-t-sm border-t border-x border-tmo-gold/30"
+                    />
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                    <p className="text-white/40 text-[10px] uppercase tracking-wider mb-1">{lang === 'hi' ? "कनवर्जन" : "Conversions"}</p>
+                    <p className="text-lg font-bold text-tmo-gold">8.4%</p>
+                  </div>
+                  <div className="bg-white/5 p-3 rounded-xl border border-white/10">
+                    <p className="text-white/40 text-[10px] uppercase tracking-wider mb-1">{lang === 'hi' ? "रेवेन्यू" : "Revenue"}</p>
+                    <p className="text-lg font-bold text-white">₹2.4L</p>
                   </div>
                 </div>
               </div>
@@ -1705,58 +1733,247 @@ function About({ lang }: { lang: Language }) {
   );
 }
 
+function GrowthCalculator({ lang }: { lang: Language }) {
+  const [adSpend, setAdSpend] = useState(5000);
+  const [cpc, setCpc] = useState(15);
+  const [convRate, setConvRate] = useState(2);
+
+  const reach = Math.floor(adSpend / cpc);
+  const leads = Math.floor(reach * (convRate / 100));
+  const avgOrderValue = 2500;
+  const profit = leads * avgOrderValue;
+
+  return (
+    <section id="growth-calculator" className="py-24 bg-tmo-black border-y border-white/5">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-serif font-bold mb-4">
+            {lang === 'hi' ? "अपने बिजनेस की ग्रोथ देखें" : "Calculate Your Business Growth"}
+          </h2>
+          <p className="text-white/60">
+            {lang === 'hi' ? "स्लाइडर्स को एडजस्ट करें और देखें कि विज्ञापन आपके बिजनेस को कैसे बदल सकते हैं" : "Adjust the sliders to see how ads can transform your business"}
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-12 bg-white/5 p-8 rounded-[2rem] border border-white/10">
+          <div className="space-y-8">
+            <div>
+              <div className="flex justify-between mb-4">
+                <label className="text-sm font-medium text-white/80">{lang === 'hi' ? "मासिक विज्ञापन बजट" : "Monthly Ad Spend"}</label>
+                <span className="text-tmo-gold font-bold">₹{adSpend.toLocaleString()}</span>
+              </div>
+              <input 
+                type="range" min="1000" max="100000" step="1000" 
+                value={adSpend} onChange={(e) => setAdSpend(Number(e.target.value))}
+                className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-tmo-gold"
+              />
+            </div>
+
+            <div>
+              <div className="flex justify-between mb-4">
+                <label className="text-sm font-medium text-white/80">{lang === 'hi' ? "प्रति क्लिक लागत (CPC)" : "Cost Per Click (CPC)"}</label>
+                <span className="text-tmo-gold font-bold">₹{cpc}</span>
+              </div>
+              <input 
+                type="range" min="5" max="100" step="1" 
+                value={cpc} onChange={(e) => setCpc(Number(e.target.value))}
+                className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-tmo-gold"
+              />
+            </div>
+
+            <div>
+              <div className="flex justify-between mb-4">
+                <label className="text-sm font-medium text-white/80">{lang === 'hi' ? "कनवर्जन रेट (%)" : "Conversion Rate (%)"}</label>
+                <span className="text-tmo-gold font-bold">{convRate}%</span>
+              </div>
+              <input 
+                type="range" min="0.5" max="10" step="0.5" 
+                value={convRate} onChange={(e) => setConvRate(Number(e.target.value))}
+                className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer accent-tmo-gold"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4">
+            <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
+              <p className="text-white/40 text-xs uppercase tracking-wider mb-1">{lang === 'hi' ? "अनुमानित पहुंच" : "Estimated Reach"}</p>
+              <p className="text-3xl font-bold text-white">{reach.toLocaleString()} <span className="text-sm font-normal text-white/40">{lang === 'hi' ? "लोग" : "people"}</span></p>
+            </div>
+            <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
+              <p className="text-white/40 text-xs uppercase tracking-wider mb-1">{lang === 'hi' ? "पोटेंशियल लीड्स" : "Potential Leads"}</p>
+              <p className="text-3xl font-bold text-tmo-gold">{leads.toLocaleString()}</p>
+            </div>
+            <div className="bg-tmo-gold p-6 rounded-2xl">
+              <p className="text-tmo-black/60 text-xs uppercase tracking-wider mb-1">{lang === 'hi' ? "अनुमानित रेवेन्यू" : "Estimated Revenue"}</p>
+              <p className="text-4xl font-bold text-tmo-black">₹{profit.toLocaleString()}</p>
+              <p className="text-tmo-black/40 text-[10px] mt-2 italic">* {lang === 'hi' ? "₹2,500 की औसत ऑर्डर वैल्यू के आधार पर" : "Based on ₹2,500 average order value"}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AddOns({ lang, onSelectAddOn }: { lang: Language, onSelectAddOn: (addon: string) => void }) {
+  const t = translations[lang].addons;
+  const addons = [
+    { 
+      name: lang === 'hi' ? "अतिरिक्त Website पेज" : "Extra Website Page", 
+      price: "₹499", 
+      period: lang === 'hi' ? "/ वर्ष प्रति पेज" : "/ year per page", 
+      desc: lang === 'hi' ? "अधिक स्थान चाहिए? अधिक कंटेंट दिखाने के लिए अपनी वेबसाइट में कभी भी अतिरिक्त पेज जोड़ें।" : "Need more space? Add extra pages to your website anytime to showcase more content.",
+      benefit: lang === 'hi' ? "आपको विशिष्ट सेवाओं या उत्पादों का विवरण देने की अनुमति देता है, जिससे SEO और ग्राहक की समझ में सुधार होता है।" : "Allows you to detail specific services or products, improving SEO and customer understanding."
+    },
+    { 
+      name: lang === 'hi' ? "प्रोफेशनल फोटोशूट" : "Professional Photoshoot", 
+      price: "₹10,000", 
+      desc: lang === 'hi' ? "दुकान, उत्पादों, टीम और कार्यक्षेत्र की उच्च गुणवत्ता वाली तस्वीरें। वेबसाइट और सोशल मीडिया के लिए बिल्कुल सही।" : "High-quality photos of shop, products, team, and workspace. Perfect for website and social media.",
+      benefit: lang === 'hi' ? "उच्च गुणवत्ता वाले दृश्यों के साथ आपके ब्रांड के कथित मूल्य को तुरंत बढ़ाता है और अपार विश्वास बनाता है।" : "Instantly elevates your brand's perceived value and builds immense trust with high-quality visuals.",
+      animation: (
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.8, 0] }}
+              transition={{ 
+                duration: 0.2, 
+                repeat: Infinity, 
+                repeatDelay: 1.5 + Math.random() * 2,
+                delay: i * 0.5
+              }}
+              className="absolute inset-0 bg-white"
+            />
+          ))}
+        </div>
+      )
+    },
+    { 
+      name: lang === 'hi' ? "Google / Facebook पेज + Ad सेटअप" : "Google / Facebook Page + Ad Setup", 
+      price: "₹5,999", 
+      desc: lang === 'hi' ? "इसमें Google Business पेज सेटअप, Facebook बिजनेस पेज सेटअप और विज्ञापन अभियान सेटअप शामिल है। (विज्ञापन चलाने की लागत Google/Facebook को अलग से भुगतान की जाती है।)" : "Includes Google Business page setup, Facebook business page setup, and Advertisement campaign setup. (Ad running cost paid separately to Google/Facebook.)",
+      benefit: lang === 'hi' ? "आपके बिजनेस को सीधे उन लोगों के सामने रखता है जो सक्रिय रूप से वह खरीदना चाहते हैं जो आप बेचते हैं।" : "Puts your business directly in front of people actively looking to buy what you sell.",
+      showTryNow: true
+    },
+    { 
+      name: lang === 'hi' ? "Google Ranking सेटअप" : "Google Ranking Setup", 
+      price: "₹5,999", 
+      period: lang === 'hi' ? "एक बार" : "one-time",
+      desc: lang === 'hi' ? "इसमें शामिल है: Google Business प्रोफाइल ऑप्टिमाइज़ेशन, लोकल कीवर्ड सेटअप, Google मैप इंटीग्रेशन, रिव्यू सेटअप, बेसिक वेबसाइट SEO।" : "Includes: Google Business profile optimization, local keyword setup, map integration, review setup, basic website SEO.",
+      benefit: lang === 'hi' ? "आपके बिजनेस को लोकल सर्च परिणामों में सबसे ऊपर ले जाता है, जिससे आपके दरवाजे पर मुफ्त, उच्च-इरादे वाला ट्रैफ़िक आता है।" : "Pushes your business to the top of local search results, driving free, high-intent traffic to your door.",
+      showTryNow: true
+    }
+  ];
+
+  const handleTryNow = () => {
+    const element = document.getElementById('growth-calculator');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <section className="py-24 bg-tmo-black border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">{t.title}</h2>
+          <p className="text-white/60 text-lg">{t.subtitle}</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {addons.map((addon, i) => (
+            <div key={i} className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col relative overflow-hidden group">
+              {addon.animation && addon.animation}
+              <h3 className="text-xl font-bold mb-2">{addon.name}</h3>
+              <div className="mb-4">
+                <span className="text-2xl font-bold shimmer-gold">{addon.price}</span>
+                {addon.period && <span className="text-white/50 text-sm ml-1">{addon.period}</span>}
+              </div>
+              <p className="text-sm text-white/70 leading-relaxed mb-4 flex-1">{addon.desc}</p>
+              <div className="bg-tmo-gold/10 border border-tmo-gold/20 rounded-lg p-3 mb-4">
+                <p className="text-tmo-gold text-xs font-medium shimmer-gold"><span className="font-bold">{lang === 'hi' ? "लाभ" : "Benefit"}:</span> {addon.benefit}</p>
+              </div>
+              
+              <div className="flex flex-col gap-2 mt-auto">
+                {addon.showTryNow && (
+                  <button 
+                    onClick={handleTryNow}
+                    className="w-full py-2 rounded-full text-sm font-semibold bg-tmo-gold text-tmo-black hover:bg-white transition-all duration-300 flex items-center justify-center gap-2"
+                  >
+                    <Zap className="w-4 h-4" />
+                    {lang === 'hi' ? "अभी आज़माएं" : "Try Now"}
+                  </button>
+                )}
+                <button 
+                  onClick={() => onSelectAddOn(addon.name)}
+                  className="w-full py-2 rounded-full text-sm font-semibold bg-white/10 text-white hover:shimmer-gold-bg hover:text-tmo-black transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <ShoppingCart className="w-4 h-4" />
+                  {t.addBtn}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Pricing({ lang, onSelectPlan }: { lang: Language, onSelectPlan: (plan: string) => void }) {
   const t = translations[lang].pricing;
+  
+  const getEmiDetails = (priceStr: string) => {
+    // Extract number from string like "₹5,000" or "₹3,00,000"
+    const price = parseInt(priceStr.replace(/[₹,]/g, ''));
+    if (isNaN(price)) return null;
+    
+    const advance = Math.floor(price * 0.6);
+    const remaining = price - advance;
+    const monthly = Math.ceil(remaining / 12);
+    
+    return {
+      advance: `₹${advance.toLocaleString()}`,
+      monthly: `₹${monthly.toLocaleString()}`,
+      total: `₹${(advance + (monthly * 12)).toLocaleString()}`
+    };
+  };
+
   const plans = [
     { 
-      name: t.starter.name, 
-      price: "₹5,000", 
-      period: lang === 'hi' ? "/ वर्ष" : "/ year", 
+      ...t.starter,
       badge: t.smallBiz,
-      desc: t.starter.desc,
-      benefit: t.starter.benefit,
-      features: t.starter.features,
-      monthlyOption: { 
-        downPayment: "₹3,000", 
-        monthly: lang === 'hi' ? "₹200/माह" : "₹200/month", 
-        total: "₹5,400", 
-        note: t.savesMoney 
-      }
+      popular: false,
+      period: lang === 'hi' ? "/ वर्ष" : "/ year",
+      emi: getEmiDetails(t.starter.price)
     },
     { 
-      name: t.growth.name, 
-      price: "₹10,000", 
-      period: lang === 'hi' ? "/ वर्ष" : "/ year", 
+      ...t.growth,
       badge: t.value,
-      desc: t.growth.desc,
-      benefit: t.growth.benefit,
-      features: t.growth.features 
+      popular: false,
+      period: lang === 'hi' ? "/ वर्ष" : "/ year",
+      emi: getEmiDetails(t.growth.price)
     },
     { 
-      name: t.business.name, 
-      price: "₹20,000", 
-      period: lang === 'hi' ? "/ वर्ष" : "/ year", 
+      ...t.business,
       popular: true, 
       badge: t.mostPopular,
-      desc: t.business.desc,
-      benefit: t.business.benefit,
-      features: t.business.features 
+      period: lang === 'hi' ? "/ वर्ष" : "/ year",
+      emi: getEmiDetails(t.business.price)
     },
     { 
-      name: t.brand.name, 
-      price: "₹50,000", 
-      period: lang === 'hi' ? "/ वर्ष" : "/ year", 
-      desc: t.brand.desc,
-      benefit: t.brand.benefit,
-      features: t.brand.features 
+      ...t.brand,
+      badge: undefined,
+      popular: false,
+      period: lang === 'hi' ? "/ वर्ष" : "/ year",
+      emi: getEmiDetails(t.brand.price)
     },
     { 
-      name: t.enterprise.name, 
-      price: lang === 'hi' ? "₹1.5 लाख" : "₹1.5 lakh", 
-      period: lang === 'hi' ? "/ वर्ष" : "/ year", 
-      desc: t.enterprise.desc,
-      benefit: t.enterprise.benefit,
-      features: t.enterprise.features 
+      ...t.enterprise,
+      badge: undefined,
+      popular: false,
+      period: lang === 'hi' ? "/ वर्ष" : "/ year",
+      emi: getEmiDetails(t.enterprise.price)
     },
   ];
 
@@ -1795,11 +2012,14 @@ function Pricing({ lang, onSelectPlan }: { lang: Language, onSelectPlan: (plan: 
               )}
               <h3 className="text-2xl font-serif mb-2 mt-2 flex items-center gap-2">
                 {plan.name === "Starter" && <Star className="w-5 h-5 text-tmo-gold fill-tmo-gold" />}
-                <span className={plan.name === "Starter" ? "" : ""}>{plan.name} {t.plan}</span>
+                <span>{plan.name} {t.plan}</span>
               </h3>
               <div className="mb-4">
-                <span className={cn("text-4xl font-bold", plan.popular ? "" : "")}>{plan.price}</span>
-                <span className="text-white/50 text-sm ml-1">{plan.period}</span>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-white/40 text-lg line-through">{plan.originalPrice}</span>
+                  <span className={cn("text-4xl font-bold", plan.popular ? "text-tmo-gold" : "text-white")}>{plan.price}</span>
+                  <span className="text-white/50 text-sm ml-1">{plan.period}</span>
+                </div>
               </div>
               <p className="text-sm text-white/70 mb-4 min-h-[40px]">{plan.desc}</p>
               
@@ -1816,17 +2036,17 @@ function Pricing({ lang, onSelectPlan }: { lang: Language, onSelectPlan: (plan: 
                 ))}
               </ul>
 
-              {plan.monthlyOption && (
+              {plan.emi && (
                 <div className="mb-8 p-4 bg-black/40 rounded-xl border border-white/5 text-sm">
                   <p className="font-semibold text-white/90 mb-2">{t.monthly}</p>
-                  <p className="text-white/60 text-xs mb-3">{lang === 'hi' ? "यदि ग्राहक मासिक भुगतान पसंद करते हैं:" : "If customers prefer monthly payment:"}</p>
+                  <p className="text-white/60 text-xs mb-3">{lang === 'hi' ? "आसान भुगतान विकल्प (60% एडवांस):" : "Easy Payment Option (60% Advance):"}</p>
                   <ul className="space-y-1 text-white/80 mb-3">
-                    <li>• {t.downPayment}: <span className="font-medium text-white">{plan.monthlyOption.downPayment}</span></li>
-                    <li>• <span className="font-medium text-white">{plan.monthlyOption.monthly}</span></li>
+                    <li>• {t.downPayment}: <span className="font-medium text-white">{plan.emi.advance}</span></li>
+                    <li>• {lang === 'hi' ? "मासिक" : "Monthly"}: <span className="font-medium text-white">{plan.emi.monthly}{lang === 'hi' ? "/माह" : "/mo"}</span></li>
                   </ul>
                   <div className="pt-3 border-t border-white/10">
-                    <p className="text-white/90 font-medium">{t.totalYearly} = {plan.monthlyOption.total}</p>
-                    <p className="text-tmo-gold text-xs mt-1">({plan.monthlyOption.note})</p>
+                    <p className="text-white/90 font-medium">{t.totalYearly} = {plan.emi.total}</p>
+                    <p className="text-tmo-gold text-xs mt-1">({t.savesMoney})</p>
                   </div>
                 </div>
               )}
@@ -1889,89 +2109,6 @@ function WebsiteTypes({ lang }: { lang: Language }) {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function AddOns({ lang, onSelectAddOn }: { lang: Language, onSelectAddOn: (addon: string) => void }) {
-  const t = translations[lang].addons;
-  const addons = [
-    { 
-      name: lang === 'hi' ? "अतिरिक्त Website पेज" : "Extra Website Page", 
-      price: "₹499", 
-      period: lang === 'hi' ? "/ वर्ष प्रति पेज" : "/ year per page", 
-      desc: lang === 'hi' ? "अधिक स्थान चाहिए? अधिक कंटेंट दिखाने के लिए अपनी वेबसाइट में कभी भी अतिरिक्त पेज जोड़ें।" : "Need more space? Add extra pages to your website anytime to showcase more content.",
-      benefit: lang === 'hi' ? "आपको विशिष्ट सेवाओं या उत्पादों का विवरण देने की अनुमति देता है, जिससे SEO और ग्राहक की समझ में सुधार होता है।" : "Allows you to detail specific services or products, improving SEO and customer understanding."
-    },
-    { 
-      name: lang === 'hi' ? "प्रोफेशनल फोटोशूट" : "Professional Photoshoot", 
-      price: "₹10,000", 
-      desc: lang === 'hi' ? "दुकान, उत्पादों, टीम और कार्यक्षेत्र की उच्च गुणवत्ता वाली तस्वीरें। वेबसाइट और सोशल मीडिया के लिए बिल्कुल सही।" : "High-quality photos of shop, products, team, and workspace. Perfect for website and social media.",
-      benefit: lang === 'hi' ? "उच्च गुणवत्ता वाले दृश्यों के साथ आपके ब्रांड के कथित मूल्य को तुरंत बढ़ाता है और अपार विश्वास बनाता है।" : "Instantly elevates your brand's perceived value and builds immense trust with high-quality visuals.",
-      animation: (
-        <div className="absolute inset-0 pointer-events-none">
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.8, 0] }}
-              transition={{ 
-                duration: 0.2, 
-                repeat: Infinity, 
-                repeatDelay: 1.5 + Math.random() * 2,
-                delay: i * 0.5
-              }}
-              className="absolute inset-0 bg-white"
-            />
-          ))}
-        </div>
-      )
-    },
-    { 
-      name: lang === 'hi' ? "Google / Facebook पेज + Ad सेटअप" : "Google / Facebook Page + Ad Setup", 
-      price: "₹5,999", 
-      desc: lang === 'hi' ? "इसमें Google Business पेज सेटअप, Facebook बिजनेस पेज सेटअप और विज्ञापन अभियान सेटअप शामिल है। (विज्ञापन चलाने की लागत Google/Facebook को अलग से भुगतान की जाती है।)" : "Includes Google Business page setup, Facebook business page setup, and Advertisement campaign setup. (Ad running cost paid separately to Google/Facebook.)",
-      benefit: lang === 'hi' ? "आपके बिजनेस को सीधे उन लोगों के सामने रखता है जो सक्रिय रूप से वह खरीदना चाहते हैं जो आप बेचते हैं।" : "Puts your business directly in front of people actively looking to buy what you sell."
-    },
-    {
-      name: lang === 'hi' ? "Google Ranking सेटअप" : "Google Ranking Setup",
-      price: "₹5,999",
-      period: lang === 'hi' ? "एक बार" : "one-time",
-      desc: lang === 'hi' ? "इसमें शामिल है: Google Business प्रोफाइल ऑप्टिमाइज़ेशन, लोकल कीवर्ड सेटअप, Google मैप इंटीग्रेशन, रिव्यू सेटअप, बेसिक वेबसाइट SEO।" : "Includes: Google Business profile optimization, local keyword setup, map integration, review setup, basic website SEO.",
-      benefit: lang === 'hi' ? "आपके बिजनेस को लोकल सर्च परिणामों में सबसे ऊपर ले जाता है, जिससे आपके दरवाजे पर मुफ्त, उच्च-इरादे वाला ट्रैफ़िक आता है।" : "Pushes your business to the top of local search results, driving free, high-intent traffic to your door."
-    }
-  ];
-
-  return (
-    <section className="py-24 bg-tmo-black border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">{t.title}</h2>
-          <p className="text-white/60 text-lg">{t.subtitle}</p>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {addons.map((addon, i) => (
-            <div key={i} className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col">
-              <h3 className="text-xl font-bold mb-2">{addon.name}</h3>
-              <div className="mb-4">
-                <span className="text-2xl font-bold shimmer-gold">{addon.price}</span>
-                {addon.period && <span className="text-white/50 text-sm ml-1">{addon.period}</span>}
-              </div>
-              <p className="text-sm text-white/70 leading-relaxed mb-4 flex-1">{addon.desc}</p>
-              <div className="bg-tmo-gold/10 border border-tmo-gold/20 rounded-lg p-3 mb-4">
-                <p className="text-tmo-gold text-xs font-medium shimmer-gold"><span className="font-bold">{lang === 'hi' ? "लाभ" : "Benefit"}:</span> {addon.benefit}</p>
-              </div>
-              <button 
-                onClick={() => onSelectAddOn(addon.name)}
-                className="w-full py-2 rounded-full text-sm font-semibold bg-white/10 text-white hover:shimmer-gold-bg hover:text-tmo-black transition-all duration-300 mt-auto flex items-center justify-center gap-2"
-              >
-                <ShoppingCart className="w-4 h-4" />
-                {t.addBtn}
-              </button>
-            </div>
-          ))}
         </div>
       </div>
     </section>
@@ -2250,6 +2387,7 @@ export default function App() {
             <Services lang={lang} onAddToCart={(item) => addToCart(item, 'pricing')} />
             <EnterpriseUSP lang={lang} />
             <WebsiteTypes lang={lang} />
+            <GrowthCalculator lang={lang} />
             <AddOns lang={lang} onSelectAddOn={handleSelectAddOn} />
             <Pricing lang={lang} onSelectPlan={handleSelectPlan} />
           </>
