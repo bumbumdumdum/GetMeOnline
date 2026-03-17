@@ -9,6 +9,7 @@ import {
   Utensils, Scissors, Dumbbell, Home, GraduationCap,
   MapPin, Clock, MessageCircle, Building2, Factory, Phone,
   FileText, Shield, Globe2, Menu, X, ShoppingCart,
+  ExternalLink,
   TrendingUp as TrendingIcon
 } from "lucide-react";
 import { cn } from "./lib/utils";
@@ -27,6 +28,7 @@ const translations = {
       services: "Services",
       templates: "Templates",
       pricing: "Pricing",
+      portfolio: "Highlights",
       contact: "Contact",
       about: "About Us",
       book: "Book Consultation"
@@ -170,6 +172,22 @@ const translations = {
       businesses: "Businesses Online",
       launch: "Average Launch"
     },
+    portfolio: {
+      title: "Our Project Highlights",
+      subtitle: "Real-world examples of how we transform businesses.",
+      project1: {
+        title: "XzeCure",
+        highlight: "Enterprise Project",
+        desc: "A high-scale security platform featuring an AI-powered headboard and a comprehensive Admin dashboard for total control.",
+        link: "https://www.XzeCure.com"
+      },
+      project2: {
+        title: "Innovative Services",
+        highlight: "Static Website",
+        desc: "A clean, professional static website designed to establish a strong digital presence and build customer trust.",
+        link: "https://innovativeservices.vercel.app"
+      }
+    },
     contact: {
       title: "Get in Touch",
       subtitle: "Ready to grow? Let's talk about your project.",
@@ -189,6 +207,7 @@ const translations = {
       services: "Services",
       templates: "Templates",
       pricing: "Pricing",
+      portfolio: "हाइलाइट्स",
       contact: "संपर्क",
       about: "हमारे बारे में",
       book: "Consultation बुक करें"
@@ -331,6 +350,22 @@ const translations = {
       websites: "Websites बनाई गईं",
       businesses: "Businesses Online",
       launch: "Average Launch"
+    },
+    portfolio: {
+      title: "हमारे प्रोजेक्ट हाइलाइट्स",
+      subtitle: "हम व्यवसायों को कैसे बदलते हैं, इसके वास्तविक उदाहरण।",
+      project1: {
+        title: "XzeCure",
+        highlight: "Enterprise Project",
+        desc: "एक उच्च-स्तरीय सुरक्षा प्लेटफ़ॉर्म जिसमें AI-संचालित हेडबोर्ड और पूर्ण नियंत्रण के लिए एक व्यापक एडमिन डैशबोर्ड है।",
+        link: "https://www.XzeCure.com"
+      },
+      project2: {
+        title: "Innovative Services",
+        highlight: "Static Website",
+        desc: "एक स्वच्छ, पेशेवर स्टेटिक वेबसाइट जिसे एक मजबूत डिजिटल उपस्थिति स्थापित करने और ग्राहकों का विश्वास बनाने के लिए डिज़ाइन किया गया है।",
+        link: "https://innovativeservices.vercel.app"
+      }
     },
     contact: {
       title: "Free Strategy Call बुक करें",
@@ -540,12 +575,22 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
   const navLinks = [
     { id: 'home', label: lang === 'hi' ? "होम" : "Home" },
     { id: 'services', label: t.services },
+    { id: 'portfolio', label: t.portfolio },
     { id: 'demo', label: t.demo },
     { id: 'about', label: t.about },
     { id: 'contact', label: t.contact },
   ];
 
   const handleNavClick = (id: string) => {
+    if (id === 'portfolio') {
+      setCurrentPage('home');
+      setIsMenuOpen(false);
+      setTimeout(() => {
+        const el = document.getElementById('portfolio');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
     setCurrentPage(id);
     setIsMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -727,17 +772,38 @@ function AiSearch({ lang }: { lang: Language }) {
     };
 
     try {
-      console.log("Starting database audit for query:", query);
+      console.log("Starting AI audit for query:", query);
       
-      // Simulate search delay
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      const response = await fetch("/api/audit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ businessName: query })
+      });
+
+      if (!response.ok) {
+        throw new Error("API request failed");
+      }
+
+      const data = await response.json();
       
-      setResult(getFallbackAudit(query));
+      // Split the 10-line report into details
+      const lines = data.report.split("\n").filter((l: string) => l.trim().length > 0);
+      
+      setResult({
+        rating: data.seoScore,
+        name: query,
+        hasWebsite: data.hasWebsite,
+        summary: lines[0] || `Audit report for ${query}`,
+        details: lines.slice(1, 6), // Use first 5 lines as details
+        upgradePlan: lines.slice(6).join(" ") || "The Søren Studio recommends a comprehensive Digital Presence Overhaul."
+      });
+      
       setSearchProgress(100);
       setIsSearching(false);
     } catch (error: any) {
-      console.error("Search failed:", error);
+      console.error("AI Search failed, using fallback:", error);
       setResult(getFallbackAudit(query));
+      setSearchProgress(100);
       setIsSearching(false);
     } finally {
       clearInterval(interval);
@@ -1037,7 +1103,7 @@ function Hero({ lang, setLang }: { lang: Language, setLang: (l: Language) => voi
             {t.bookBtn} <ArrowRight className="w-5 h-5" />
           </a>
           <a 
-            href="#templates" 
+            href="#portfolio" 
             className="w-full sm:w-auto bg-white/10 backdrop-blur-sm text-white border border-white/20 px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/20 transition-colors"
           >
             {t.workBtn}
@@ -2139,6 +2205,111 @@ function Stats({ lang }: { lang: Language }) {
   );
 }
 
+function Portfolio({ lang }: { lang: Language }) {
+  const t = translations[lang].portfolio;
+  const projects = [
+    {
+      title: t.project1.title,
+      highlight: t.project1.highlight,
+      desc: t.project1.desc,
+      link: t.project1.link,
+      url: "xzecure.com",
+      color: "from-blue-600 to-indigo-700"
+    },
+    {
+      title: t.project2.title,
+      highlight: t.project2.highlight,
+      desc: t.project2.desc,
+      link: t.project2.link,
+      url: "innovativeservices.vercel.app",
+      color: "from-emerald-600 to-teal-700"
+    }
+  ];
+
+  return (
+    <section id="portfolio" className="py-32 bg-tmo-black overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-20">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">{t.title}</h2>
+          <p className="text-white/60 max-w-2xl mx-auto text-lg">{t.subtitle}</p>
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-12">
+          {projects.map((project, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="group relative"
+            >
+              <div className={cn(
+                "absolute -inset-1 bg-gradient-to-r blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200",
+                project.color
+              )} />
+              <div className="relative bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden flex flex-col h-full">
+                {/* Browser Header */}
+                <div className="bg-white/5 border-b border-white/10 px-4 py-3 flex items-center gap-2">
+                  <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
+                  </div>
+                  <div className="flex-1 max-w-md mx-auto bg-black/40 rounded-md py-1 px-3 text-[10px] text-white/40 font-mono text-center truncate">
+                    {project.url}
+                  </div>
+                </div>
+
+                {/* Preview Area */}
+                <div className="aspect-video relative overflow-hidden bg-black">
+                  <iframe 
+                    src={project.link} 
+                    className="w-full h-[200%] border-none pointer-events-none scale-[0.5] origin-top opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                    title={project.title}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent" />
+                </div>
+
+                {/* Content */}
+                <div className="p-8 flex flex-col flex-1">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs font-bold uppercase tracking-widest text-tmo-gold">
+                      {project.highlight}
+                    </span>
+                    <a 
+                      href={project.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-white/40 hover:text-white transition-colors"
+                    >
+                      <ExternalLink className="w-5 h-5" />
+                    </a>
+                  </div>
+                  <h3 className="text-2xl font-serif font-bold mb-3">{project.title}</h3>
+                  <p className="text-white/60 text-sm leading-relaxed mb-6">
+                    {project.desc}
+                  </p>
+                  <div className="mt-auto">
+                    <a 
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-white group/link"
+                    >
+                      View Live Project
+                      <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Contact({ 
   lang,
   selectedPlan, 
@@ -2292,6 +2463,7 @@ function Footer({ lang }: { lang: Language }) {
             <h4 className="font-semibold mb-6">{t.links}</h4>
             <ul className="space-y-4 text-white/60">
               <li><a href="#" className="hover:text-tmo-gold transition-colors">{lang === 'hi' ? "होम" : "Home"}</a></li>
+              <li><a href="#portfolio" className="hover:text-tmo-gold transition-colors">{lang === 'hi' ? "हाइलाइट्स" : "Highlights"}</a></li>
               <li><a href="#services" className="hover:text-tmo-gold transition-colors">{tNav.services}</a></li>
               <li><a href="#templates" className="hover:text-tmo-gold transition-colors">{tNav.templates}</a></li>
               <li><a href="#pricing" className="hover:text-tmo-gold transition-colors">{tNav.pricing}</a></li>
@@ -2418,6 +2590,7 @@ export default function App() {
             <Hero lang={lang} setLang={setLang} />
             <SocialProof lang={lang} />
             <Stats lang={lang} />
+            <Portfolio lang={lang} />
           </>
         );
     }
