@@ -51,7 +51,7 @@ async function startServer() {
           "X-Title": "The Søren Studio"
         },
         body: JSON.stringify({
-          "model": "hunter-alpha", // Using the model specified by the user
+          "model": "google/gemini-2.0-flash-001", // Switched to a valid high-performance model ID
           "messages": [
             {
               "role": "system",
