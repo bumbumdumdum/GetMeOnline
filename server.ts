@@ -3,7 +3,6 @@ import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
-import { GoogleGenAI } from "@google/genai";
 
 dotenv.config();
 
@@ -25,9 +24,15 @@ async function startServer() {
     }
 
     try {
-      const apiKey = process.env.OPENROUTER_API_KEY;
+      // Check for multiple possible environment variable names
+      const apiKey = process.env.OPENROUTER_API_KEY || process.env.AI_API_KEY;
+      
       if (!apiKey) {
-        throw new Error("OPENROUTER_API_KEY is not configured");
+        console.error("CONFIG ERROR: No API key found in environment variables (checked OPENROUTER_API_KEY and AI_API_KEY)");
+        return res.status(500).json({ 
+          error: "API key not configured on server",
+          details: "Please ensure OPENROUTER_API_KEY or AI_API_KEY is set in your Vercel Environment Variables."
+        });
       }
 
       const prompt = `You are an expert Digital Business Auditor. 
@@ -42,37 +47,85 @@ async function startServer() {
       
       Format: Exactly 10 lines. No conversational filler. Be professional and direct.`;
 
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      // Use VERCEL_URL or APP_URL for the referer header
+      const referer = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : (process.env.APP_URL || "http://localhost:3000");
+
+      // First API call with reasoning
+      const response1 = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${apiKey}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": process.env.APP_URL || "http://localhost:3000",
+          "HTTP-Referer": referer,
           "X-Title": "The Søren Studio"
         },
         body: JSON.stringify({
-          "model": "google/gemini-2.0-flash-001", // Switched to a valid high-performance model ID
+          "model": "openrouter/hunter-alpha",
           "messages": [
-            {
-              "role": "system",
-              "content": "You are a warm, curious, and thoughtful AI assistant. You provide production-grade functional analysis with a focus on bold, intentional aesthetics."
-            },
             {
               "role": "user",
               "content": prompt
             }
-          ]
+          ],
+          "reasoning": {"enabled": true}
         })
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("OpenRouter Error:", errorData);
-        throw new Error(`OpenRouter API failed: ${response.statusText}`);
+      if (!response1.ok) {
+        const errorData = await response1.json();
+        console.error("OpenRouter API Error (Step 1):", errorData);
+        throw new Error(`OpenRouter API Step 1 failed: ${response1.statusText}`);
       }
 
-      const data = await response.json();
-      const auditText = data.choices[0].message.content;
+      const result1 = await response1.json();
+      if (!result1.choices || !result1.choices[0]) {
+        throw new Error("Invalid response format from AI provider (Step 1)");
+      }
+      const assistantMessage = result1.choices[0].message;
+
+      // Second API call - model continues reasoning from where it left off
+      const messages = [
+        {
+          role: 'user',
+          content: prompt,
+        },
+        {
+          role: 'assistant',
+          content: assistantMessage.content,
+          reasoning_details: assistantMessage.reasoning_details, // Pass back unmodified
+        },
+        {
+          role: 'user',
+          content: "Are you sure? Think carefully and provide the final 10-line report.",
+        },
+      ];
+
+      const response2 = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": referer,
+          "X-Title": "The Søren Studio"
+        },
+        body: JSON.stringify({
+          "model": "openrouter/hunter-alpha",
+          "messages": messages
+        })
+      });
+
+      if (!response2.ok) {
+        const errorData = await response2.json();
+        console.error("OpenRouter API Error (Step 2):", errorData);
+        throw new Error(`OpenRouter API Step 2 failed: ${response2.statusText}`);
+      }
+
+      const result2 = await response2.json();
+      if (!result2.choices || !result2.choices[0]) {
+        throw new Error("Invalid response format from AI provider (Step 2)");
+      }
+
+      const auditText = result2.choices[0].message.content;
       
       // Simulate SEO score based on AI analysis
       const seoScore = Math.floor(Math.random() * (85 - 30 + 1)) + 30;
@@ -82,9 +135,12 @@ async function startServer() {
         seoScore,
         hasWebsite: auditText.toLowerCase().includes("website") && !auditText.toLowerCase().includes("no website")
       });
-    } catch (error) {
-      console.error("AI Audit Error:", error);
-      res.status(500).json({ error: "Failed to perform AI audit" });
+    } catch (error: any) {
+      console.error("AI Audit Backend Error:", error.message || error);
+      res.status(500).json({ 
+        error: "Failed to perform AI audit",
+        message: error.message || "Internal Server Error"
+      });
     }
   });
 
