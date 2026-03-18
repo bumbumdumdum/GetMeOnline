@@ -3,9 +3,9 @@ import {
   Globe, Smartphone, TrendingUp, Users, 
   CheckCircle2, Monitor, LayoutTemplate,
   Server, Share2, ArrowRight, Star,
-  Search, Loader2, Facebook, Twitter, Instagram,
-  AlertCircle, CheckCircle, IndianRupee, Rocket,
-  ShieldCheck, Heart, Zap, Award, Briefcase, Stethoscope,
+  Search, Facebook, Twitter, Instagram,
+  IndianRupee, Rocket,
+  ShieldCheck, Heart, Zap, Briefcase, Stethoscope,
   Utensils, Scissors, Dumbbell, Home, GraduationCap,
   MapPin, Clock, MessageCircle, Building2, Factory, Phone,
   FileText, Shield, Globe2, Menu, X, ShoppingCart,
@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { cn } from "./lib/utils";
 import React, { useState, useEffect } from "react";
-import { BUSINESS_DATABASE } from "./data/businesses";
 
 const LOGO_URL = "https://raw.githubusercontent.com/XzeBitOP/SorenAssets/0385f974fa45012b25cdb9e9ab825d3dd10a7065/Website%20images/6D2E38AE-E45F-4861-96EB-B2FC8B03F4A2.png";
 const VIDEO_URL = "https://raw.githubusercontent.com/bumbumdumdum/Website-media/228b75dc532ce4847376361eb60e702adf384cf7/gemini_generated_video_8CF985E8.mov";
@@ -53,19 +52,11 @@ const translations = {
       title: "Turn Clicks Into",
       titleAccent: "Customers",
       aiSubtitle: "Dont get lost in world of",
-      checkAi: "Run a real-time AI & SEO audit on any business.",
+      checkAi: "Search for your business on Google.",
       placeholder: "Enter business name (e.g. 'Sharma Sweets Mumbai')...",
-      checkBtn: "Audit Now",
-      searching: "Auditing...",
-      searchingOn: "AI is searching Google for",
-      resultHigh: "Excellent! Your business has a strong online presence.",
-      resultLow: "Your business is invisible or has poor SEO. You are losing customers daily.",
+      checkBtn: "Search Google",
       bookBtn: "Book Free Consultation",
-      workBtn: "View Our Work",
-      auditDetails: "Audit Details",
-      websiteFound: "Website Found",
-      noWebsite: "No Website Found",
-      seoScore: "SEO Score"
+      workBtn: "View Our Work"
     },
     social: {
       trusted: "Trusted by Growing Businesses",
@@ -238,19 +229,11 @@ const translations = {
       title: "Clicks को",
       titleAccent: "Customers में बदलें",
       aiSubtitle: "Ai की दुनिया में न खोएं",
-      checkAi: "किसी भी Business का रियल-टाइम AI और SEO ऑडिट करें।",
+      checkAi: "Google पर अपना Business खोजें।",
       placeholder: "Business का नाम दर्ज करें (जैसे 'शर्मा स्वीट्स मुंबई')...",
-      checkBtn: "अभी ऑडिट करें",
-      searching: "ऑडिट हो रहा है...",
-      searchingOn: "AI Google पर खोज रहा है",
-      resultHigh: "उत्कृष्ट! आपके Business की ऑनलाइन उपस्थिति बहुत मजबूत है।",
-      resultLow: "आपका Business अदृश्य है या SEO खराब है। आप रोज़ाना ग्राहक खो रहे हैं।",
+      checkBtn: "Google सर्च करें",
       bookBtn: "Free Consultation बुक करें",
-      workBtn: "हमारा काम देखें",
-      auditDetails: "ऑडिट विवरण",
-      websiteFound: "Website मिली",
-      noWebsite: "Website नहीं मिली",
-      seoScore: "SEO स्कोर"
+      workBtn: "हमारा काम देखें"
     },
     social: {
       trusted: "बढ़ते Businesses द्वारा भरोसेमंद",
@@ -699,127 +682,11 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
 function AiSearch({ lang }: { lang: Language }) {
   const t = translations[lang].hero;
   const [query, setQuery] = useState("");
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchCount, setSearchCount] = useState(0);
-  const MAX_SEARCHES = 2;
-  const [searchEngine, setSearchEngine] = useState("");
-  const [searchProgress, setSearchProgress] = useState(0);
-  const [result, setResult] = useState<{ 
-    rating: number, 
-    name: string, 
-    hasWebsite: boolean,
-    summary: string,
-    details: string[],
-    upgradePlan: string
-  } | null>(null);
 
-  const handleSearch = async (e: React.FormEvent) => {
+  const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim() || searchCount >= MAX_SEARCHES) return;
-    
-    setIsSearching(true);
-    setSearchCount(prev => prev + 1);
-    setResult(null);
-    setSearchProgress(0);
-    
-    const engines = [
-      { msg: "Connecting to Global SEO Index...", progress: 10 },
-      { msg: "Scanning Google Search results...", progress: 25 },
-      { msg: "Analyzing local directory citations...", progress: 45 },
-      { msg: "Evaluating Social Media presence...", progress: 65 },
-      { msg: "Running AI Empathic Audit...", progress: 85 },
-      { msg: "Finalizing report...", progress: 95 }
-    ];
-
-    let step = 0;
-    const interval = setInterval(() => {
-      if (step < engines.length) {
-        setSearchEngine(engines[step].msg);
-        setSearchProgress(engines[step].progress);
-        step++;
-      }
-    }, 1200);
-
-    const getFallbackAudit = (name: string) => {
-      const dbMatch = BUSINESS_DATABASE.find(b => 
-        b.name.toLowerCase().includes(name.toLowerCase()) || 
-        name.toLowerCase().includes(b.name.toLowerCase())
-      );
-
-      if (dbMatch) {
-        // Rating from 85 to 100
-        const rating = Math.floor(Math.random() * (100 - 85 + 1)) + 85;
-        return {
-          rating,
-          name: dbMatch.name,
-          hasWebsite: true,
-          summary: `${dbMatch.name} is a verified business in our database. Their digital presence in the ${dbMatch.sector} sector is strong but has room for premium optimization.`,
-          details: [
-            `Established presence in ${dbMatch.location}.`,
-            `Active website found at ${dbMatch.website}.`,
-            "Local SEO rankings are in the top 20th percentile.",
-            "Brand consistency is maintained across major platforms.",
-            "Mobile experience is functional but could be enhanced."
-          ],
-          upgradePlan: "The Søren Studio recommends our 'Growth Engine' package to transition from a strong local player to a digital leader."
-        };
-      }
-
-      // Rating from 1 to 20
-      const rating = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
-      return {
-        rating,
-        name: name || "Business",
-        hasWebsite: false,
-        summary: `Digital presence audit for ${name || "this business"} reveals significant growth opportunities. Our database indicates a limited online footprint.`,
-        details: [
-          "Search engine visibility is currently below industry average.",
-          "Local map listings require optimization and verification.",
-          "Social media engagement shows potential for brand building.",
-          "Website performance and mobile responsiveness need review.",
-          "Digital brand consistency is fragmented across platforms."
-        ],
-        upgradePlan: "The Søren Studio recommends a comprehensive Digital Presence Overhaul to capture market share."
-      };
-    };
-
-    try {
-      console.log("Starting AI audit for query:", query);
-      
-      const response = await fetch("/api/audit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ businessName: query })
-      });
-
-      if (!response.ok) {
-        throw new Error("API request failed");
-      }
-
-      const data = await response.json();
-      
-      // Split the 10-line report into details
-      const lines = data.report.split("\n").filter((l: string) => l.trim().length > 0);
-      
-      setResult({
-        rating: data.seoScore,
-        name: query,
-        hasWebsite: data.hasWebsite,
-        summary: lines[0] || `Audit report for ${query}`,
-        details: lines.slice(1, 6), // Use first 5 lines as details
-        upgradePlan: lines.slice(6).join(" ") || "The Søren Studio recommends a comprehensive Digital Presence Overhaul."
-      });
-      
-      setSearchProgress(100);
-      setIsSearching(false);
-    } catch (error: any) {
-      console.error("AI Search failed, using fallback:", error);
-      setResult(getFallbackAudit(query));
-      setSearchProgress(100);
-      setIsSearching(false);
-    } finally {
-      clearInterval(interval);
-    }
+    if (!query.trim()) return;
+    window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
   };
 
   return (
@@ -829,14 +696,8 @@ function AiSearch({ lang }: { lang: Language }) {
       transition={{ duration: 0.8, delay: 0.3 }}
       className="mt-8 mb-12 max-w-2xl mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl"
     >
-      <p className="text-white/90 font-medium mb-4 text-sm md:text-base flex justify-between items-center">
-        <span>{t.checkAi}</span>
-        <span className={cn(
-          "text-xs px-2 py-1 rounded-full border",
-          searchCount >= MAX_SEARCHES ? "bg-red-500/20 border-red-500/50 text-red-200" : "bg-white/10 border-white/20 text-white/60"
-        )}>
-          {MAX_SEARCHES - searchCount}/{MAX_SEARCHES} searches available
-        </span>
+      <p className="text-white/90 font-medium mb-4 text-sm md:text-base">
+        {t.checkAi}
       </p>
       <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
         <div className="flex-1 relative">
@@ -844,197 +705,19 @@ function AiSearch({ lang }: { lang: Language }) {
             type="text" 
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            disabled={searchCount >= MAX_SEARCHES}
-            placeholder={searchCount >= MAX_SEARCHES ? "Search limit reached" : t.placeholder} 
-            className="w-full bg-tmo-black/50 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-tmo-gold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            placeholder={t.placeholder} 
+            className="w-full bg-tmo-black/50 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-tmo-gold transition-colors"
             required
           />
         </div>
         <button 
           type="submit" 
-          disabled={isSearching || searchCount >= MAX_SEARCHES}
-          className="shimmer-gold-bg text-tmo-black px-6 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[120px]"
+          className="shimmer-gold-bg text-tmo-black px-6 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all flex items-center justify-center gap-2 min-w-[120px]"
         >
-          {isSearching ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
-          {isSearching ? t.searching : t.checkBtn}
+          <Search className="w-5 h-5" />
+          {t.checkBtn}
         </button>
       </form>
-
-      {isSearching && (
-        <div className="mt-8 space-y-6">
-          <div className="space-y-2">
-            <div className="flex justify-between text-xs font-mono text-tmo-gold">
-              <span>{searchEngine}</span>
-              <span>{searchProgress}%</span>
-            </div>
-            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
-              <motion.div 
-                initial={{ width: 0 }}
-                animate={{ width: `${searchProgress}%` }}
-                className="h-full bg-tmo-gold shadow-[0_0_10px_rgba(250,204,21,0.5)]"
-              />
-            </div>
-          </div>
-
-          {/* Skeleton Loader */}
-          <div className="rounded-3xl bg-tmo-black/50 border border-white/5 p-6 space-y-6 animate-pulse">
-            <div className="flex justify-between items-start">
-              <div className="space-y-3">
-                <div className="h-8 w-48 bg-white/10 rounded-lg" />
-                <div className="h-4 w-24 bg-white/5 rounded-full" />
-              </div>
-              <div className="h-16 w-16 rounded-full bg-white/10" />
-            </div>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-3">
-                <div className="h-3 w-20 bg-tmo-gold/20 rounded" />
-                <div className="h-4 w-full bg-white/5 rounded" />
-                <div className="h-4 w-5/6 bg-white/5 rounded" />
-              </div>
-              <div className="space-y-3">
-                <div className="h-3 w-20 bg-white/10 rounded" />
-                <div className="h-3 w-full bg-white/5 rounded" />
-                <div className="h-3 w-full bg-white/5 rounded" />
-                <div className="h-3 w-full bg-white/5 rounded" />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {result && !isSearching && (
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="mt-8 overflow-hidden rounded-3xl bg-tmo-black/90 border border-white/10 shadow-2xl"
-        >
-          {/* Header with Score */}
-          <div className="p-8 border-b border-white/10 bg-gradient-to-br from-white/5 to-transparent">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div>
-                <h4 className="font-serif text-3xl font-bold mb-2">{result.name}</h4>
-                <div className="flex items-center gap-3">
-                  {result.hasWebsite ? (
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold uppercase tracking-wider">
-                      <CheckCircle className="w-3.5 h-3.5" /> {t.websiteFound}
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider">
-                      <AlertCircle className="w-3.5 h-3.5" /> {t.noWebsite}
-                    </div>
-                  )}
-                </div>
-              </div>
-              
-              <div className="relative">
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <div className="text-[10px] text-white/40 uppercase font-black tracking-[0.2em] mb-1">{t.seoScore}</div>
-                    <div className={cn(
-                      "text-5xl font-black tabular-nums leading-none",
-                      result.rating > 70 ? "text-green-400" : result.rating > 30 ? "text-yellow-400" : "text-red-400"
-                    )}>
-                      {result.rating}
-                    </div>
-                  </div>
-                  <div className="w-16 h-16 rounded-full border-4 border-white/5 flex items-center justify-center relative overflow-hidden">
-                    <div 
-                      className={cn(
-                        "absolute inset-0 opacity-20",
-                        result.rating > 70 ? "bg-green-400" : result.rating > 30 ? "bg-yellow-400" : "bg-red-400"
-                      )}
-                      style={{ height: `${result.rating}%`, top: `${100 - result.rating}%` }}
-                    />
-                    <Award className={cn(
-                      "w-8 h-8 relative z-10",
-                      result.rating > 70 ? "text-green-400" : result.rating > 30 ? "text-yellow-400" : "text-red-400"
-                    )} />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Progress Bar */}
-          <div className="h-1.5 w-full bg-white/5 relative overflow-hidden">
-            <motion.div 
-              initial={{ width: 0 }}
-              animate={{ width: `${result.rating}%` }}
-              transition={{ duration: 1.5, ease: "circOut" }}
-              className={cn(
-                "h-full relative",
-                result.rating > 70 ? "bg-green-400" : result.rating > 30 ? "bg-yellow-400" : "bg-red-400"
-              )}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer"></div>
-            </motion.div>
-          </div>
-          
-          {/* Content */}
-          <div className="p-8 space-y-8">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 text-tmo-gold">
-                  <Zap className="w-4 h-4" />
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">AI Summary</span>
-                </div>
-                <p className="text-lg text-white/90 leading-relaxed font-serif italic">
-                  "{result?.summary}"
-                </p>
-              </div>
-              
-              <div className="space-y-6">
-                <div>
-                  <div className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-4">{t.auditDetails}</div>
-                  <ul className="space-y-3">
-                    {result?.details?.map((detail, i) => (
-                      <motion.li 
-                        initial={{ opacity: 0, x: 10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.5 + (i * 0.1) }}
-                        key={i} 
-                        className="flex items-start gap-3 text-sm text-white/60 group"
-                      >
-                        <div className="mt-1.5 p-0.5 rounded-full bg-tmo-gold/20 text-tmo-gold group-hover:bg-tmo-gold group-hover:text-tmo-black transition-colors">
-                          <CheckCircle2 className="w-3 h-3" />
-                        </div>
-                        <span className="group-hover:text-white/90 transition-colors">{detail}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* Upgrade Plan Section */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 }}
-              className="bg-tmo-gold/5 border border-tmo-gold/20 rounded-2xl p-6 relative overflow-hidden group"
-            >
-              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <Rocket className="w-12 h-12 text-tmo-gold" />
-              </div>
-              <div className="flex items-center gap-2 text-tmo-gold mb-4">
-                <Award className="w-5 h-5" />
-                <span className="text-xs font-black uppercase tracking-[0.2em]">The Søren Studio Upgrade Plan</span>
-              </div>
-              <p className="text-white/80 leading-relaxed text-sm md:text-base">
-                {result?.upgradePlan}
-              </p>
-              <div className="mt-6 flex justify-end">
-                <a 
-                  href="#contact" 
-                  className="px-6 py-3 rounded-xl bg-tmo-gold text-tmo-black font-bold text-sm flex items-center justify-center gap-2 hover:bg-white transition-all hover:scale-[1.02] active:scale-[0.98]"
-                >
-                  {lang === 'hi' ? "ऑडिट रिपोर्ट ठीक करें" : "Fix Audit Report"} <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-      )}
     </motion.div>
   );
 }
