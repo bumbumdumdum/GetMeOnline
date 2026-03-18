@@ -9,7 +9,7 @@ import {
   Utensils, Scissors, Dumbbell, Home, GraduationCap,
   MapPin, Clock, MessageCircle, Building2, Factory, Phone,
   FileText, Shield, Globe2, Menu, X, ShoppingCart,
-  ExternalLink,
+  ExternalLink, AlertTriangle,
   TrendingUp as TrendingIcon
 } from "lucide-react";
 import { cn } from "./lib/utils";
@@ -49,14 +49,13 @@ const translations = {
       }
     },
     hero: {
-      title: "Turn Clicks Into",
-      titleAccent: "Customers",
-      aiSubtitle: "Dont get lost in world of",
-      checkAi: "Search for your business on Google.",
-      placeholder: "Enter business name (e.g. 'Sharma Sweets Mumbai')...",
-      checkBtn: "Search Google",
+      title: "How Much Business",
+      titleAccent: "Are You Losing?",
+      aiSubtitle: "Answer 5 simple questions to see how many customers you’re missing.",
+      startAudit: "👉 Start Free Audit",
       bookBtn: "Book Free Consultation",
-      workBtn: "View Our Work"
+      workBtn: "View Our Work",
+      demoPlaceholder: "Enter your business name"
     },
     social: {
       trusted: "Trusted by Growing Businesses",
@@ -196,6 +195,36 @@ const translations = {
       sending: "Sending...",
       success: "Message sent! We'll contact you soon.",
       error: "Something went wrong. Please try again."
+    },
+    audit: {
+      q1: "Do you have a professional website?",
+      q2: "Can customers find your business on Google?",
+      q3: "Can customers contact you instantly online?",
+      q4: "Do customers book or order directly from you online?",
+      q5: "Do you regularly get new customers from the internet?",
+      options: {
+        yes: "Yes",
+        no: "No",
+        sometimes: "Sometimes",
+        topResults: "Yes (appears in top results)",
+        notSure: "Not sure",
+        whatsapp: "Yes (WhatsApp / call button)"
+      },
+      results: {
+        title: "Your Business Visibility Score",
+        missingCustomers: "Customers You’re Missing",
+        revenueLoss: "Estimated Revenue Loss",
+        competitors: "Your Competitors Are Doing This:",
+        comp1: "Getting found on Google",
+        comp2: "Receiving daily enquiries",
+        comp3: "Converting via WhatsApp",
+        solution: "With GetBizOnline:",
+        recovery: "You can recover this in 7 days",
+        cta: "Get My Business Online",
+        powerMove: "Businesses like yours are gaining 2–5 new customers daily through online presence.",
+        perMonth: "per month",
+        customersMonth: "customers/month"
+      }
     }
   },
   hi: {
@@ -226,14 +255,13 @@ const translations = {
       }
     },
     hero: {
-      title: "Clicks को",
-      titleAccent: "Customers में बदलें",
-      aiSubtitle: "Ai की दुनिया में न खोएं",
-      checkAi: "Google पर अपना Business खोजें।",
-      placeholder: "Business का नाम दर्ज करें (जैसे 'शर्मा स्वीट्स मुंबई')...",
-      checkBtn: "Google सर्च करें",
+      title: "आप कितना बिजनेस",
+      titleAccent: "खो रहे हैं?",
+      aiSubtitle: "यह देखने के लिए 5 सरल प्रश्नों के उत्तर दें कि आप कितने ग्राहकों को खो रहे हैं।",
+      startAudit: "👉 फ्री ऑडिट शुरू करें",
       bookBtn: "Free Consultation बुक करें",
-      workBtn: "हमारा काम देखें"
+      workBtn: "हमारा काम देखें",
+      demoPlaceholder: "अपने बिजनेस का नाम दर्ज करें"
     },
     social: {
       trusted: "बढ़ते Businesses द्वारा भरोसेमंद",
@@ -373,6 +401,36 @@ const translations = {
       sending: "भेज रहे हैं...",
       success: "संदेश भेज दिया गया! हम जल्द ही आपसे संपर्क करेंगे।",
       error: "कुछ गलत हो गया। कृपया पुनः प्रयास करें।"
+    },
+    audit: {
+      q1: "क्या आपके पास एक पेशेवर वेबसाइट है?",
+      q2: "क्या ग्राहक Google पर आपका व्यवसाय ढूंढ सकते हैं?",
+      q3: "क्या ग्राहक आपसे ऑनलाइन तुरंत संपर्क कर सकते हैं?",
+      q4: "क्या ग्राहक आपसे सीधे ऑनलाइन बुकिंग या ऑर्डर करते हैं?",
+      q5: "क्या आपको नियमित रूप से इंटरनेट से नए ग्राहक मिलते हैं?",
+      options: {
+        yes: "हाँ",
+        no: "नहीं",
+        sometimes: "कभी-कभी",
+        topResults: "हाँ (शीर्ष परिणामों में दिखाई देता है)",
+        notSure: "पक्का नहीं पता",
+        whatsapp: "हाँ (WhatsApp / कॉल बटन)"
+      },
+      results: {
+        title: "आपका बिजनेस विजिबिलिटी स्कोर",
+        missingCustomers: "ग्राहक जो आप खो रहे हैं",
+        revenueLoss: "अनुमानित राजस्व हानि",
+        competitors: "आपके प्रतिस्पर्धी यह कर रहे हैं:",
+        comp1: "Google पर पाए जा रहे हैं",
+        comp2: "दैनिक पूछताछ प्राप्त कर रहे हैं",
+        comp3: "WhatsApp के माध्यम से कनवर्ट कर रहे हैं",
+        solution: "GetBizOnline के साथ:",
+        recovery: "आप इसे 7 दिनों में रिकवर कर सकते हैं",
+        cta: "अपना बिजनेस ऑनलाइन लाएं",
+        powerMove: "आप जैसे व्यवसाय ऑनलाइन उपस्थिति के माध्यम से प्रतिदिन 2-5 नए ग्राहक प्राप्त कर रहे हैं।",
+        perMonth: "प्रति माह",
+        customersMonth: "ग्राहक/माह"
+      }
     }
   }
 };
@@ -679,45 +737,237 @@ function Navbar({ lang, setLang, currentPage, setCurrentPage }: {
   );
 }
 
-function AiSearch({ lang }: { lang: Language }) {
-  const t = translations[lang].hero;
-  const [query, setQuery] = useState("");
+function BusinessAudit({ lang }: { lang: Language }) {
+  const t = translations[lang].audit;
+  const [step, setStep] = useState(0); // 0: Start, 1-5: Questions, 6: Results
+  const [answers, setAnswers] = useState<number[]>([]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-    window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+  const questions = [
+    {
+      id: 1,
+      text: t.q1,
+      options: [
+        { text: t.options.yes, points: 20 },
+        { text: t.options.no, points: 0 }
+      ]
+    },
+    {
+      id: 2,
+      text: t.q2,
+      options: [
+        { text: t.options.topResults, points: 30 },
+        { text: t.options.sometimes, points: 15 },
+        { text: t.options.no, points: 0 }
+      ]
+    },
+    {
+      id: 3,
+      text: t.q3,
+      options: [
+        { text: t.options.whatsapp, points: 15 },
+        { text: t.options.no, points: 0 }
+      ]
+    },
+    {
+      id: 4,
+      text: t.q4,
+      options: [
+        { text: t.options.yes, points: 15 },
+        { text: t.options.no, points: 0 }
+      ]
+    },
+    {
+      id: 5,
+      text: t.q5,
+      options: [
+        { text: t.options.yes, points: 20 },
+        { text: t.options.notSure, points: 10 },
+        { text: t.options.no, points: 0 }
+      ]
+    }
+  ];
+
+  const handleAnswer = (points: number) => {
+    const newAnswers = [...answers, points];
+    setAnswers(newAnswers);
+    if (step < 5) {
+      setStep(step + 1);
+    } else {
+      setStep(6);
+    }
   };
+
+  const calculateResults = () => {
+    const totalScore = answers.reduce((a, b) => a + b, 0);
+    let status = "";
+    let revenueLoss = "";
+    let missingCustomers = "";
+    let color = "";
+
+    if (totalScore <= 40) {
+      status = lang === 'hi' ? "उच्च हानि 🚨" : "High loss 🚨";
+      revenueLoss = "₹50,000 – ₹1,00,000";
+      missingCustomers = "200 – 400";
+      color = "text-red-500";
+    } else if (totalScore <= 70) {
+      status = lang === 'hi' ? "मध्यम हानि ⚠️" : "Moderate loss ⚠️";
+      revenueLoss = "₹20,000 – ₹50,000";
+      missingCustomers = "100 – 200";
+      color = "text-yellow-500";
+    } else {
+      status = lang === 'hi' ? "सुधार की गुंजाइश 👍" : "Good but can improve 👍";
+      revenueLoss = "₹10,000 – ₹20,000";
+      missingCustomers = "50 – 100";
+      color = "text-green-500";
+    }
+
+    return { totalScore, status, revenueLoss, missingCustomers, color };
+  };
+
+  if (step === 0) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mt-8 mb-12"
+      >
+        <button 
+          onClick={() => setStep(1)}
+          className="shimmer-gold-bg text-tmo-black px-10 py-5 rounded-2xl font-bold text-xl hover:scale-[1.05] transition-all shadow-2xl flex items-center gap-3 mx-auto"
+        >
+          {translations[lang].hero.startAudit}
+        </button>
+      </motion.div>
+    );
+  }
+
+  if (step <= 5) {
+    const q = questions[step - 1];
+    return (
+      <div className="mt-8 mb-12 max-w-2xl mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+        {/* Progress Bar */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-white/10">
+          <motion.div 
+            initial={{ width: 0 }}
+            animate={{ width: `${(step / 5) * 100}%` }}
+            className="h-full bg-tmo-gold"
+          />
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.3 }}
+            className="pt-4"
+          >
+            <span className="text-tmo-gold font-mono text-sm mb-2 block">Question {step} of 5</span>
+            <h3 className="text-2xl font-serif font-bold mb-8 text-white">{q.text}</h3>
+            <div className="grid gap-4">
+              {q.options.map((opt, i) => (
+                <button
+                  key={i}
+                  onClick={() => handleAnswer(opt.points)}
+                  className="w-full text-left p-5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-tmo-gold transition-all text-white font-medium flex justify-between items-center group"
+                >
+                  {opt.text}
+                  <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    );
+  }
+
+  const results = calculateResults();
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.3 }}
-      className="mt-8 mb-12 max-w-2xl mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="mt-8 mb-12 max-w-3xl mx-auto bg-white/5 backdrop-blur-lg border border-white/20 rounded-[2rem] p-8 md:p-12 shadow-2xl text-left"
     >
-      <p className="text-white/90 font-medium mb-4 text-sm md:text-base">
-        {t.checkAi}
-      </p>
-      <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
-        <div className="flex-1 relative">
-          <input 
-            type="text" 
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t.placeholder} 
-            className="w-full bg-tmo-black/50 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-tmo-gold transition-colors"
-            required
-          />
+      <div className="text-center mb-10">
+        <h3 className="text-xl text-white/60 mb-2">{t.results.title}</h3>
+        <div className="text-7xl font-serif font-black text-tmo-gold mb-4">
+          {results.totalScore} <span className="text-2xl text-white/40">/ 100</span>
         </div>
-        <button 
-          type="submit" 
-          className="shimmer-gold-bg text-tmo-black px-6 py-3 rounded-xl font-bold hover:scale-[1.02] transition-all flex items-center justify-center gap-2 min-w-[120px]"
-        >
-          <Search className="w-5 h-5" />
-          {t.checkBtn}
-        </button>
-      </form>
+        <div className={cn("text-2xl font-bold", results.color)}>
+          {results.status}
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6 mb-10">
+        <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+          <div className="flex items-center gap-3 mb-2 text-red-400">
+            <Users className="w-5 h-5" />
+            <span className="font-bold uppercase tracking-wider text-xs">{t.results.missingCustomers}</span>
+          </div>
+          <div className="text-3xl font-bold text-white">~{results.missingCustomers}</div>
+          <div className="text-white/40 text-sm">{t.results.customersMonth}</div>
+        </div>
+
+        <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
+          <div className="flex items-center gap-3 mb-2 text-red-400">
+            <TrendingIcon className="w-5 h-5" />
+            <span className="font-bold uppercase tracking-wider text-xs">{t.results.revenueLoss}</span>
+          </div>
+          <div className="text-3xl font-bold text-white">{results.revenueLoss}</div>
+          <div className="text-white/40 text-sm">{t.results.perMonth}</div>
+        </div>
+      </div>
+
+      <div className="space-y-8 mb-10">
+        <div>
+          <h4 className="text-white/60 text-sm font-bold uppercase tracking-widest mb-4">{t.results.competitors}</h4>
+          <ul className="space-y-3">
+            {[t.results.comp1, t.results.comp2, t.results.comp3].map((item, i) => (
+              <li key={i} className="flex items-center gap-3 text-white/80">
+                <CheckCircle2 className="w-5 h-5 text-green-500" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="p-6 rounded-2xl bg-tmo-gold/10 border border-tmo-gold/20">
+          <div className="flex items-center gap-3 mb-2 text-tmo-gold">
+            <Rocket className="w-5 h-5" />
+            <span className="font-bold uppercase tracking-wider text-xs">{t.results.solution}</span>
+          </div>
+          <p className="text-xl font-bold text-white mb-4">{t.results.recovery}</p>
+          <p className="text-white/60 text-sm italic">
+            "{t.results.powerMove}"
+          </p>
+        </div>
+      </div>
+
+      <button 
+        onClick={() => {
+          const pricingSection = document.getElementById('pricing');
+          if (pricingSection) {
+            pricingSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
+        className="w-full shimmer-gold-bg text-tmo-black py-5 rounded-2xl font-bold text-xl hover:scale-[1.02] transition-all shadow-xl flex items-center justify-center gap-3"
+      >
+        {t.results.cta}
+        <ArrowRight className="w-6 h-6" />
+      </button>
+      
+      <button 
+        onClick={() => {
+          setStep(0);
+          setAnswers([]);
+        }}
+        className="w-full mt-4 text-white/40 hover:text-white/60 text-sm transition-colors"
+      >
+        {lang === 'hi' ? "फिर से शुरू करें" : "Restart Audit"}
+      </button>
     </motion.div>
   );
 }
@@ -780,10 +1030,10 @@ function Hero({ lang, setLang }: { lang: Language, setLang: (l: Language) => voi
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto mb-8 font-light flex items-center justify-center gap-3 flex-wrap"
         >
-          {t.aiSubtitle} <span className="text-5xl md:text-7xl font-serif font-bold text-tmo-gold leading-none">Ai</span>
+          {t.aiSubtitle}
         </motion.div>
 
-        <AiSearch lang={lang} />
+        <BusinessAudit lang={lang} />
 
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -1087,7 +1337,7 @@ function DemoSite({ lang, likedDemo, setLikedDemo }: { lang: Language, likedDemo
               type="text" 
               value={businessName}
               onChange={(e) => setBusinessName(e.target.value)}
-              placeholder={t.placeholder} 
+              placeholder={t.demoPlaceholder} 
               className="bg-tmo-black/50 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-tmo-gold transition-colors"
               required
             />
