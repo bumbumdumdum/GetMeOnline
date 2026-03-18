@@ -18,8 +18,10 @@ async function startServer() {
   // AI Audit Endpoint
   app.post("/api/audit", async (req, res) => {
     const { businessName } = req.body;
+    console.log(`[API] Received audit request for business: "${businessName}"`);
 
     if (!businessName) {
+      console.warn("[API] Missing businessName in request body");
       return res.status(400).json({ error: "Business name is required" });
     }
 
@@ -28,12 +30,14 @@ async function startServer() {
       const apiKey = process.env.OPENROUTER_API_KEY || process.env.AI_API_KEY;
       
       if (!apiKey) {
-        console.error("CONFIG ERROR: No API key found in environment variables (checked OPENROUTER_API_KEY and AI_API_KEY)");
+        console.error("[API] CONFIG ERROR: No API key found in environment variables (checked OPENROUTER_API_KEY and AI_API_KEY)");
         return res.status(500).json({ 
           error: "API key not configured on server",
           details: "Please ensure OPENROUTER_API_KEY or AI_API_KEY is set in your Vercel Environment Variables."
         });
       }
+
+      console.log("[API] API key found, proceeding with OpenRouter request...");
 
       const prompt = `You are an expert Digital Business Auditor. 
       Analyze the business: "${businessName}".
@@ -50,6 +54,7 @@ async function startServer() {
       // Use VERCEL_URL or APP_URL for the referer header
       const referer = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : (process.env.APP_URL || "http://localhost:3000");
 
+      console.log("[API] Step 1: Requesting initial reasoning from OpenRouter...");
       // First API call with reasoning
       const response1 = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -73,16 +78,18 @@ async function startServer() {
 
       if (!response1.ok) {
         const errorData = await response1.json();
-        console.error("OpenRouter API Error (Step 1):", errorData);
+        console.error("[API] OpenRouter Error (Step 1):", errorData);
         throw new Error(`OpenRouter API Step 1 failed: ${response1.statusText}`);
       }
 
       const result1 = await response1.json();
       if (!result1.choices || !result1.choices[0]) {
+        console.error("[API] Invalid response format (Step 1):", result1);
         throw new Error("Invalid response format from AI provider (Step 1)");
       }
       const assistantMessage = result1.choices[0].message;
 
+      console.log("[API] Step 2: Continuing reasoning for final report...");
       // Second API call - model continues reasoning from where it left off
       const messages = [
         {
@@ -116,16 +123,18 @@ async function startServer() {
 
       if (!response2.ok) {
         const errorData = await response2.json();
-        console.error("OpenRouter API Error (Step 2):", errorData);
+        console.error("[API] OpenRouter Error (Step 2):", errorData);
         throw new Error(`OpenRouter API Step 2 failed: ${response2.statusText}`);
       }
 
       const result2 = await response2.json();
       if (!result2.choices || !result2.choices[0]) {
+        console.error("[API] Invalid response format (Step 2):", result2);
         throw new Error("Invalid response format from AI provider (Step 2)");
       }
 
       const auditText = result2.choices[0].message.content;
+      console.log("[API] Audit report successfully generated.");
       
       // Simulate SEO score based on AI analysis
       const seoScore = Math.floor(Math.random() * (85 - 30 + 1)) + 30;
@@ -136,7 +145,7 @@ async function startServer() {
         hasWebsite: auditText.toLowerCase().includes("website") && !auditText.toLowerCase().includes("no website")
       });
     } catch (error: any) {
-      console.error("AI Audit Backend Error:", error.message || error);
+      console.error("[API] AI Audit Backend Error:", error.message || error);
       res.status(500).json({ 
         error: "Failed to perform AI audit",
         message: error.message || "Internal Server Error"

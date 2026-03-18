@@ -186,6 +186,12 @@ const translations = {
         highlight: "Static Website",
         desc: "A clean, professional static website designed to establish a strong digital presence and build customer trust.",
         link: "https://innovativeservices.vercel.app"
+      },
+      project3: {
+        title: "RetroStrip",
+        highlight: "XzeCure Project",
+        desc: "A specialized project developed in collaboration with XzeCure, focusing on unique digital aesthetics and functional excellence.",
+        link: "https://retro-strip.vercel.app/"
       }
     },
     contact: {
@@ -365,6 +371,12 @@ const translations = {
         highlight: "Static Website",
         desc: "एक स्वच्छ, पेशेवर स्टेटिक वेबसाइट जिसे एक मजबूत डिजिटल उपस्थिति स्थापित करने और ग्राहकों का विश्वास बनाने के लिए डिज़ाइन किया गया है।",
         link: "https://innovativeservices.vercel.app"
+      },
+      project3: {
+        title: "RetroStrip",
+        highlight: "XzeCure प्रोजेक्ट",
+        desc: "XzeCure के सहयोग से विकसित एक विशेष प्रोजेक्ट, जो अद्वितीय डिजिटल सौंदर्यशास्त्र और कार्यात्मक उत्कृष्टता पर केंद्रित है।",
+        link: "https://retro-strip.vercel.app/"
       }
     },
     contact: {
@@ -2223,6 +2235,15 @@ function Portfolio({ lang }: { lang: Language }) {
       link: t.project2.link,
       url: "innovativeservices.vercel.app",
       color: "from-emerald-600 to-teal-700"
+    },
+    {
+      title: t.project3.title,
+      highlight: t.project3.highlight,
+      desc: t.project3.desc,
+      link: t.project3.link,
+      url: "retro-strip.vercel.app",
+      color: "from-orange-600 to-red-700",
+      noLink: true
     }
   ];
 
@@ -2276,29 +2297,37 @@ function Portfolio({ lang }: { lang: Language }) {
                     <span className="text-xs font-bold uppercase tracking-widest text-tmo-gold">
                       {project.highlight}
                     </span>
-                    <a 
-                      href={project.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="text-white/40 hover:text-white transition-colors"
-                    >
-                      <ExternalLink className="w-5 h-5" />
-                    </a>
+                    {!project.noLink && (
+                      <a 
+                        href={project.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-white/40 hover:text-white transition-colors"
+                      >
+                        <ExternalLink className="w-5 h-5" />
+                      </a>
+                    )}
                   </div>
                   <h3 className="text-2xl font-serif font-bold mb-3">{project.title}</h3>
                   <p className="text-white/60 text-sm leading-relaxed mb-6">
                     {project.desc}
                   </p>
                   <div className="mt-auto">
-                    <a 
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm font-semibold text-white group/link"
-                    >
-                      View Live Project
-                      <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                    </a>
+                    {!project.noLink ? (
+                      <a 
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm font-semibold text-white group/link"
+                      >
+                        View Live Project
+                        <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                      </a>
+                    ) : (
+                      <div className="inline-flex items-center gap-2 text-sm font-semibold text-white/40 cursor-default">
+                        {lang === 'hi' ? "प्रोजेक्ट प्रीव्यू" : "Project Preview Only"}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
