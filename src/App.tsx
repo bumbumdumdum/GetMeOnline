@@ -180,8 +180,8 @@ const translations = {
       },
       project3: {
         title: "RetroStrip",
-        highlight: "XzeCure Project",
-        desc: "A specialized project developed in collaboration with XzeCure, focusing on unique digital aesthetics and functional excellence.",
+        highlight: "Mobile App",
+        desc: "A fun mobile app that turns your phone into a vintage photo booth. Capture classic film-strip style photos instantly on your device.",
         link: "https://retro-strip.vercel.app/"
       }
     },
@@ -357,8 +357,8 @@ const translations = {
       },
       project3: {
         title: "RetroStrip",
-        highlight: "XzeCure प्रोजेक्ट",
-        desc: "XzeCure के सहयोग से विकसित एक विशेष प्रोजेक्ट, जो अद्वितीय डिजिटल सौंदर्यशास्त्र और कार्यात्मक उत्कृष्टता पर केंद्रित है।",
+        highlight: "मोबाइल ऐप",
+        desc: "एक मज़ेदार मोबाइल ऐप जो आपके फोन को विंटेज फोटो बूथ में बदल देता है। अपने डिवाइस पर तुरंत क्लासिक फिल्म-स्ट्रिप स्टाइल फोटो कैप्चर करें।",
         link: "https://retro-strip.vercel.app/"
       }
     },
@@ -1924,9 +1924,10 @@ function Portfolio({ lang }: { lang: Language }) {
       highlight: t.project3.highlight,
       desc: t.project3.desc,
       link: t.project3.link,
-      url: "retro-strip.vercel.app",
+      url: "retro-strip.app",
       color: "from-orange-600 to-red-700",
-      noLink: true
+      noLink: true,
+      isApp: true
     }
   ];
 
@@ -1952,16 +1953,25 @@ function Portfolio({ lang }: { lang: Language }) {
                 project.color
               )} />
               <div className="relative bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden flex flex-col h-full">
-                {/* Browser Header */}
+                {/* Browser Header / App Header */}
                 <div className="bg-white/5 border-b border-white/10 px-4 py-3 flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
-                  </div>
-                  <div className="flex-1 max-w-md mx-auto bg-black/40 rounded-md py-1 px-3 text-[10px] text-white/40 font-mono text-center truncate">
-                    {project.url}
-                  </div>
+                  {!project.isApp ? (
+                    <>
+                      <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/50" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/50" />
+                      </div>
+                      <div className="flex-1 max-w-md mx-auto bg-black/40 rounded-md py-1 px-3 text-[10px] text-white/40 font-mono text-center truncate">
+                        {project.url}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="flex items-center gap-2 text-white/40">
+                      <Smartphone className="w-3 h-3" />
+                      <span className="text-[10px] font-mono uppercase tracking-wider">Mobile Application</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Preview Area */}
@@ -2008,7 +2018,11 @@ function Portfolio({ lang }: { lang: Language }) {
                       </a>
                     ) : (
                       <div className="inline-flex items-center gap-2 text-sm font-semibold text-white/40 cursor-default">
-                        {lang === 'hi' ? "प्रोजेक्ट प्रीव्यू" : "Project Preview Only"}
+                        {project.isApp ? (
+                          lang === 'hi' ? "ऐप प्रीव्यू" : "App Preview Only"
+                        ) : (
+                          lang === 'hi' ? "प्रोजेक्ट प्रीव्यू" : "Project Preview Only"
+                        )}
                       </div>
                     )}
                   </div>
