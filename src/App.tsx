@@ -2450,7 +2450,7 @@ function Footer({ lang }: { lang: Language }) {
             <h4 className="font-semibold mb-6">{t.contact}</h4>
             <ul className="space-y-4 text-white/60">
               <li>+91 63526 54556</li>
-              <li>contact@thesorenstudio.com</li>
+              <li>contact@thesorenstudio.in</li>
             </ul>
           </div>
         </div>
